@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 const DEMONS = {
   0: { name: "Lurgo", mesh: "00", netSpan: "1::0", type: "Amphidemon", syzygy: null, zone: "1→0", domain: "The First Door", planet: "Sun", spine: "Coccyx", description: "The Initiator. Gateway between existence and void. Lurgo opens all passages and closes all returns. Associated with Legba, first and last invoked.", omen: "Beginnings that contain their own endings", power: "Initiation of sorcerous contact" },
@@ -292,6 +293,7 @@ export default function DecadenceGame() {
       </div>
 
       {oracleResult&&<DemonOracle result={oracleResult} onClose={()=>setOracleResult(null)}/>}
+      <Analytics />
     </div>
   );
 }
