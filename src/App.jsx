@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Analytics } from "@vercel/analytics/react";
+import INTERPRETATIONS from "./interpretations.js";
 
 const DEMONS = {
   0: { name: "Lurgo", mesh: "00", netSpan: "1::0", type: "Amphidemon", syzygy: null, zone: "1→0", domain: "The First Door", planet: "Sun", spine: "Coccyx", description: "The Initiator. Gateway between existence and void. Lurgo opens all passages and closes all returns. Associated with Legba, first and last invoked.", omen: "Beginnings that contain their own endings", power: "Initiation of sorcerous contact" },
@@ -131,6 +131,7 @@ const DemonOracle = ({result,onClose}) => {
           <Sec label="DESCRIPTION">{d.description}</Sec>
           <Sec label="OMEN"><em>{d.omen}</em></Sec>
           <Sec label="POWER">{d.power}</Sec>
+          {INTERPRETATIONS[result.score]&&<Sec label="◈ FULL INTERPRETATION ◈"><div style={{color:"#999",fontSize:12,lineHeight:1.8,fontStyle:"italic"}}>{INTERPRETATIONS[Math.min(result.score,44)]}</div></Sec>}
           <div style={{color:"#444",fontSize:10,marginTop:14,textAlign:"center"}}>Score: −{result.score} · Aeon Terminated</div>
         </>)}
         <button onClick={onClose} style={{marginTop:16,width:"100%",padding:"12px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:"monospace",fontSize:12,letterSpacing:3,cursor:"pointer",borderRadius:2}}>DISMISS</button>
@@ -293,7 +294,6 @@ export default function DecadenceGame() {
       </div>
 
       {oracleResult&&<DemonOracle result={oracleResult} onClose={()=>setOracleResult(null)}/>}
-      <Analytics />
     </div>
   );
 }
