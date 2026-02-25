@@ -52,29 +52,11 @@ const DEMONS = {
 const ANGELIC_INDEX = ["Equilibrium — the scales hold steady","First Light — a single ray pierces the void","Duality's Gift — the twin currents align","The Trident — three forces converge","Foundation Stone — the base is secured","Pentagrammic Seal — five points of power","Hexadic Harmony — the sixfold pattern emerges","Seventh Gate — passage through the threshold","Octave Resonance — the cycle completes","Novenary Apex — approaching the limit","Decadic Completion — the full circle turns"];
 
 const NumogramSVG = ({ size = 120 }) => {
-  const Z = {6:[120,38],3:[72,65],2:[162,130],7:[174,190],5:[46,175],4:[32,225],1:[115,255],8:[115,318],9:[115,372],0:[115,420]};
-  const gates = [["15",138,18],["21",90,90],["5",50,112],["10",78,258],["1",120,230],["28",152,242],["36",144,334],["45",88,376]];
-  const flows = [[Z[6],Z[3]],[Z[6],Z[2]],[Z[2],Z[7]],[Z[2],Z[5]],[Z[5],Z[4]],[Z[4],Z[1]],[Z[7],Z[1]],[Z[3],Z[1]],[Z[1],Z[8]],[Z[8],Z[9]],[Z[9],Z[0]]];
-  const syz = [[Z[9],Z[0]],[Z[8],Z[1]],[Z[7],Z[2]],[Z[6],Z[3]],[Z[5],Z[4]]];
-  const tri = {0:"up",1:"down",2:"left",3:"right",4:"right",5:"right",6:"left",7:"left",8:"up",9:"down"};
-  const mkTri = (cx,cy,dir) => {const s=5; if(dir==="up")return cx+","+(cy-s)+" "+(cx-s)+","+(cy+s*0.7)+" "+(cx+s)+","+(cy+s*0.7); if(dir==="down")return cx+","+(cy+s)+" "+(cx-s)+","+(cy-s*0.7)+" "+(cx+s)+","+(cy-s*0.7); if(dir==="left")return (cx-s)+","+cy+" "+(cx+s*0.7)+","+(cy-s)+" "+(cx+s*0.7)+","+(cy+s); return (cx+s)+","+cy+" "+(cx-s*0.7)+","+(cy-s)+" "+(cx-s*0.7)+","+(cy+s);};
-
+  const orbs = [[88,42],[132,42],[160,110],[182,168],[76,148],[42,200],[115,270],[115,330],[115,388],[115,440]];
   return (
-    <svg viewBox="0 0 230 455" width={size} height={size*(455/230)} style={{display:"block"}}>
-      <defs>
-        <radialGradient id="nbg" cx="50%" cy="35%" r="65%"><stop offset="0%" stopColor="#060d06"/><stop offset="100%" stopColor="#000"/></radialGradient>
-        <filter id="zg"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-      </defs>
-      <rect width="230" height="455" rx="12" fill="url(#nbg)" stroke="#0f3" strokeWidth="0.7" opacity="0.85"/>
-      <path d={"M "+(Z[3][0]-10)+","+(Z[3][1]-15)+" C "+(Z[3][0]-30)+","+(Z[3][1]-50)+" "+(Z[6][0]+30)+","+(Z[6][1]-50)+" "+(Z[6][0]+10)+","+(Z[6][1]-15)} fill="none" stroke="#0f3" strokeWidth="0.7" opacity="0.2"/>
-      <path d={"M "+Z[2][0]+","+Z[2][1]+" Q "+(Z[2][0]-30)+","+(Z[2][1]+30)+" "+(Z[5][0]+30)+","+(Z[5][1])+" L "+Z[5][0]+","+Z[5][1]} fill="none" stroke="#0f3" strokeWidth="0.9" opacity="0.18"/>
-      <path d={"M "+Z[7][0]+","+Z[7][1]+" Q "+(Z[7][0]-15)+","+(Z[7][1]+35)+" "+(Z[1][0]+25)+","+Z[1][1]+" L "+(Z[1][0]+18)+","+Z[1][1]} fill="none" stroke="#0f3" strokeWidth="0.9" opacity="0.18"/>
-      <ellipse cx={Z[9][0]} cy={(Z[9][1]+Z[0][1])/2} rx="16" ry="28" fill="none" stroke="#0f3" strokeWidth="0.4" opacity="0.1"/>
-      {flows.map(([a,b],i) => <line key={"f"+i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#0f3" strokeWidth="0.6" opacity="0.2"/>)}
-      {syz.map(([a,b],i) => <line key={"s"+i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#0f3" strokeWidth="0.5" opacity="0.12" strokeDasharray="3,3"/>)}
-      {Object.entries(Z).map(([z,[x,y]]) => <g key={z} filter="url(#zg)"><circle cx={x} cy={y} r="18" fill="#040804" stroke="#0f3" strokeWidth="1.1" opacity="0.8"/><polygon points={mkTri(x,y-2,tri[z])} fill="#0f3" opacity="0.25"/><text x={x} y={y+7} textAnchor="middle" fill="#0f3" fontSize="16" fontFamily="monospace" fontWeight="bold" opacity="0.9">{z}</text></g>)}
-      {gates.map(([v,x,y]) => <g key={"g"+v}><circle cx={x} cy={y} r="9" fill="#020502" stroke="#0f3" strokeWidth="0.5" opacity="0.45"/><text x={x} y={y+3.5} textAnchor="middle" fill="#0f3" fontSize="8" fontFamily="monospace" fontStyle="italic" opacity="0.55">{v}</text></g>)}
-      <text x="115" y="449" textAnchor="middle" fill="#0f3" fontSize="6.5" fontFamily="monospace" opacity="0.3" letterSpacing="4">NUMOGRAM</text>
+    <svg viewBox="0 0 230 480" width={size} height={size*(480/230)} style={{display:"block"}}>
+      <rect width="230" height="480" fill="#000" rx="0"/>
+      {orbs.map(([x,y],i) => <circle key={i} cx={x} cy={y} r="18" fill="#0f0"/>)}
     </svg>
   );
 };
