@@ -52,11 +52,97 @@ const DEMONS = {
 const ANGELIC_INDEX = ["Equilibrium — the scales hold steady","First Light — a single ray pierces the void","Duality's Gift — the twin currents align","The Trident — three forces converge","Foundation Stone — the base is secured","Pentagrammic Seal — five points of power","Hexadic Harmony — the sixfold pattern emerges","Seventh Gate — passage through the threshold","Octave Resonance — the cycle completes","Novenary Apex — approaching the limit","Decadic Completion — the full circle turns"];
 
 const NumogramSVG = ({ size = 120 }) => {
-  const orbs = [[88,42],[132,42],[160,110],[182,168],[76,148],[42,200],[115,270],[115,330],[115,388],[115,440]];
+  // Zone positions matched precisely to CCRU reference image
+  // 3,6 twinned top-center; 2 upper-right; 7 far-right; 5 left; 4 lower-left; 1 center; 8,9,0 descending center
+  const Z = {
+    3:[82,72], 6:[128,48], 2:[172,118], 7:[188,178],
+    5:[58,168], 4:[38,218], 1:[125,262], 8:[125,328],
+    9:[125,386], 0:[125,436]
+  };
+  const R = 20; // zone radius
+  const gr = 8; // gate radius
+
+  // Gate positions from reference
+  const gates = [
+    ["15",128,16],["21",105,96],["5",56,114],
+    ["10",82,268],["1",128,232],["28",162,248],
+    ["36",156,348],["45",92,390]
+  ];
+
+  // Directional triangles per zone (matching reference arrows)
+  const mkTri = (cx,cy,d) => {
+    const s=6;
+    if(d==="u") return (cx-s)+","+(cy+s*0.6)+" "+cx+","+(cy-s)+" "+(cx+s)+","+(cy+s*0.6);
+    if(d==="d") return (cx-s)+","+(cy-s*0.6)+" "+cx+","+(cy+s)+" "+(cx+s)+","+(cy-s*0.6);
+    if(d==="r") return (cx-s*0.6)+","+(cy-s)+" "+(cx+s)+","+cy+" "+(cx-s*0.6)+","+(cy+s);
+    return (cx+s*0.6)+","+(cy-s)+" "+(cx-s)+","+cy+" "+(cx+s*0.6)+","+(cy+s);
+  };
+  // Triangle directions from reference image
+  const triDir = {3:"r",6:"l",2:"l",7:"l",5:"r",4:"r",1:"d",8:"u",9:"d",0:"u"};
+
   return (
-    <svg viewBox="0 0 230 480" width={size} height={size*(480/230)} style={{display:"block"}}>
-      <rect width="230" height="480" fill="#000" rx="0"/>
-      {orbs.map(([x,y],i) => <circle key={i} cx={x} cy={y} r="18" fill="#0f0"/>)}
+    <svg viewBox="0 0 230 470" width={size} height={size*(470/230)} style={{display:"block",filter:"drop-shadow(0 0 4px rgba(0,255,136,0.2))"}}>
+      <defs>
+        <radialGradient id="nbg" cx="50%" cy="30%" r="65%"><stop offset="0%" stopColor="#060d06"/><stop offset="100%" stopColor="#000"/></radialGradient>
+        <filter id="zgl"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <rect width="230" height="470" rx="10" fill="url(#nbg)" stroke="#0f3" strokeWidth="0.6" opacity="0.85"/>
+
+      {/* === SWEEPING ARC: from 6 over the top, curving left past 3 and down === */}
+      <path d={"M "+Z[6][0]+","+(Z[6][1]-R)+" C "+(Z[6][0]+10)+","+(Z[6][1]-55)+" "+(Z[3][0]-35)+","+(Z[3][1]-55)+" "+(Z[3][0]-25)+","+(Z[3][1])+" Q "+(Z[3][0]-35)+","+(Z[3][1]+50)+" "+(Z[4][0]+5)+","+(Z[4][1]-10)} fill="none" stroke="#0f3" strokeWidth="0.8" opacity="0.3"/>
+
+      {/* === HOLD CURRENT: 2→5 wide sweep arrow === */}
+      <path d={"M "+Z[2][0]+","+Z[2][1]+" C "+(Z[2][0]-20)+","+(Z[2][1]+35)+" "+(Z[5][0]+50)+","+(Z[5][1]-15)+" "+Z[5][0]+","+Z[5][1]} fill="none" stroke="#0f3" strokeWidth="1.2" opacity="0.25" strokeLinecap="round"/>
+      {/* Arrow head for 2→5 */}
+      <polygon points={(Z[5][0]+8)+","+(Z[5][1]-5)+" "+(Z[5][0]-2)+","+(Z[5][1])+" "+(Z[5][0]+8)+","+(Z[5][1]+5)} fill="#0f3" opacity="0.25"/>
+
+      {/* === SURGE CURRENT: 7→1 curved sweep === */}
+      <path d={"M "+Z[7][0]+","+Z[7][1]+" C "+(Z[7][0]-5)+","+(Z[7][1]+40)+" "+(Z[1][0]+40)+","+(Z[1][1]-15)+" "+(Z[1][0]+R)+","+Z[1][1]} fill="none" stroke="#0f3" strokeWidth="1.2" opacity="0.25" strokeLinecap="round"/>
+      {/* Arrow head for 7→1 */}
+      <polygon points={(Z[7][0]-5)+","+(Z[7][1]+8)+" "+Z[7][0]+","+(Z[7][1]-2)+" "+(Z[7][0]+5)+","+(Z[7][1]+8)} fill="#0f3" opacity="0.25" transform={"rotate(160,"+Z[7][0]+","+Z[7][1]+")"}/>
+
+      {/* === STIPPLED CONNECTIONS (4↔5 sink, 1→7 surge band) === */}
+      <line x1={Z[4][0]+12} y1={Z[4][1]-12} x2={Z[5][0]-5} y2={Z[5][1]+12} stroke="#0f3" strokeWidth="3" opacity="0.12" strokeLinecap="round"/>
+      <line x1={Z[4][0]+14} y1={Z[4][1]-10} x2={Z[5][0]-3} y2={Z[5][1]+14} stroke="#0f3" strokeWidth="1.5" opacity="0.08" strokeDasharray="2,3"/>
+
+      {/* === FLOW LINES (thin connections between zones) === */}
+      {[
+        [Z[6],Z[3]], // 6↔3 warp twin
+        [Z[6],Z[2]], // 6→2 curve
+        [Z[3],Z[1]], // 3→1 descent via curve
+        [Z[4],Z[1]], // 4→1
+        [Z[1],Z[8]], // 1→8
+        [Z[8],Z[9]], // 8→9
+        [Z[9],Z[0]], // 9→0
+        [Z[2],Z[7]], // 2→7
+      ].map(([a,b],i) => <line key={"fl"+i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#0f3" strokeWidth="0.5" opacity="0.18"/>)}
+
+      {/* === SYZYGY LINES (dashed, connecting 9-sum pairs) === */}
+      {[
+        [Z[9],Z[0]], [Z[8],Z[1]], [Z[7],Z[2]], [Z[6],Z[3]], [Z[5],Z[4]]
+      ].map(([a,b],i) => <line key={"sy"+i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#0f3" strokeWidth="0.4" opacity="0.1" strokeDasharray="3,4"/>)}
+
+      {/* === PLEX REGION (9↔0 enclosure) === */}
+      <ellipse cx={Z[9][0]} cy={(Z[9][1]+Z[0][1])/2} rx="22" ry="32" fill="none" stroke="#0f3" strokeWidth="0.4" opacity="0.08"/>
+
+      {/* === ZONE CIRCLES (main orbs) === */}
+      {Object.entries(Z).map(([z,[x,y]]) => (
+        <g key={"z"+z} filter="url(#zgl)">
+          <circle cx={x} cy={y} r={R} fill="#050905" stroke="#0f3" strokeWidth="1.2" opacity="0.85"/>
+          <polygon points={mkTri(x,y-1,triDir[z])} fill="#0f3" opacity="0.3"/>
+          <text x={x} y={y+7} textAnchor="middle" fill="#0f3" fontSize="16" fontFamily="monospace" fontWeight="bold" opacity="0.9">{z}</text>
+        </g>
+      ))}
+
+      {/* === GATE CIRCLES (small numbered nodes) === */}
+      {gates.map(([v,x,y]) => (
+        <g key={"gt"+v}>
+          <circle cx={x} cy={y} r={gr} fill="#020502" stroke="#0f3" strokeWidth="0.5" opacity="0.4"/>
+          <text x={x} y={y+3} textAnchor="middle" fill="#0f3" fontSize="7.5" fontFamily="monospace" fontStyle="italic" opacity="0.5">{v}</text>
+        </g>
+      ))}
+
+      <text x="115" y="462" textAnchor="middle" fill="#0f3" fontSize="6" fontFamily="monospace" opacity="0.25" letterSpacing="3">NUMOGRAM</text>
     </svg>
   );
 };
