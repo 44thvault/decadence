@@ -240,7 +240,7 @@ export default function DecadenceGame(){
   const shareDemonCall=()=>{
     if(!oracleResult||oracleResult.type==="angelic")return;
     const d=oracleResult.demon;
-    const text="DEMON CALL: "+d.name+" (Mesh-"+d.mesh+")\n"+d.type+" · ["+d.netSpan+"]\nDomain: "+d.domain+"\nOmen: "+d.omen+"\n\nCalled from the Pandemonium Matrix\nhttps://decadence-delta.vercel.app/";
+    const text="DEMON CALL: "+d.name+" (Mesh-"+d.mesh+")\n"+d.type+" · ["+d.netSpan+"]\nDomain: "+d.domain+"\nOmen: "+d.omen+"\n\nGet your own reading at\nhttps://playdecadence.online";
     if(navigator.share){navigator.share({title:"Demon Call: "+d.name,text}).catch(()=>{});}
     else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>alert("Copied to clipboard"));}
   };
