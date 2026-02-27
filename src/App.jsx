@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import INTERPRETATIONS from "./interpretations.js";
-import { startAmbient, stopAmbient, playCardFlip, playPairSuccess, playPairFail, playSkipWarn, playAngelic, playDemonCall, playZoneTap, playClick, setMuted, isMuted } from "./audio.js";
+import { startAmbient, stopAmbient, killAll, playCardFlip, playPairSuccess, playPairFail, playSkipWarn, playAngelic, playDemonCall, playZoneTap, playClick, setMuted, isMuted } from "./audio.js";
 
 // ═══ HAPTIC FEEDBACK UTILITY ═══
 const haptic = (ms=15) => { try { navigator.vibrate && navigator.vibrate(ms); } catch(e){} };
@@ -211,7 +211,7 @@ export default function DecadenceGame(){
     for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}return cards;
   },[mode]);
 
-  const startAeon=()=>{haptic();playClick();startAmbient();setAeonScore(0);setRoundNum(0);const d=createDeck();const s1=d.splice(0,5),s2=d.splice(0,5);setDeck(d);setSet1(s1);setSet2(s2);setRevealedIndex(-1);setSelectedSet2(null);setMatchedSet1(new Set());setMatchedSet2(new Set());setScore(0);setRoundResults([]);setGamePhase("playing");setMessage("TAP A SET-2 CARD TO REVEAL");setRoundNum(1);setTotalGames(g=>{const n=g+1;saveData("totalGames",n);return n;});};
+  const startAeon=()=>{killAll();haptic();playClick();startAmbient();setAeonScore(0);setRoundNum(0);const d=createDeck();const s1=d.splice(0,5),s2=d.splice(0,5);setDeck(d);setSet1(s1);setSet2(s2);setRevealedIndex(-1);setSelectedSet2(null);setMatchedSet1(new Set());setMatchedSet2(new Set());setScore(0);setRoundResults([]);setGamePhase("playing");setMessage("TAP A SET-2 CARD TO REVEAL");setRoundNum(1);setTotalGames(g=>{const n=g+1;saveData("totalGames",n);return n;});};
 
   const dealRound=useCallback(()=>{haptic();let d=deck.length>=10?[...deck]:createDeck();const s1=d.splice(0,5),s2=d.splice(0,5);setDeck(d);setSet1(s1);setSet2(s2);setRevealedIndex(-1);setSelectedSet2(null);setMatchedSet1(new Set());setMatchedSet2(new Set());setScore(0);setRoundResults([]);setGamePhase("playing");setMessage("TAP A SET-2 CARD TO REVEAL");setRoundNum(r=>r+1);},[deck,createDeck]);
 
@@ -371,7 +371,7 @@ export default function DecadenceGame(){
           <div style={{color:"#888",fontSize:12,marginBottom:24}}>Final Aeon: {aeonScore} · {roundNum} rounds</div>
           <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
             <button onClick={()=>setOracleResult({type:"demonic",score:Math.abs(score),demon:DEMONS[Math.min(Math.abs(score),44)]||DEMONS[0]})} style={{padding:"10px 20px",background:"transparent",border:"1px solid #f04",color:"#f04",fontFamily:"monospace",fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2}}>VIEW ORACLE</button>
-            <button onClick={()=>{haptic();stopAmbient();setGamePhase("menu");}} style={{padding:"10px 20px",background:"transparent",border:"1px solid #44444440",color:"#666",fontFamily:"monospace",fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2}}>NEW AEON</button>
+            <button onClick={()=>{killAll();haptic();stopAmbient();setGamePhase("menu");}} style={{padding:"10px 20px",background:"transparent",border:"1px solid #44444440",color:"#666",fontFamily:"monospace",fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2}}>NEW AEON</button>
           </div>
         </div>)}
 
@@ -380,7 +380,7 @@ export default function DecadenceGame(){
         </footer>
       </div>
 
-      {oracleResult&&<DemonOracle result={oracleResult} onClose={()=>setOracleResult(null)} onShare={shareDemonCall}/>}
+      {oracleResult&&<DemonOracle result={oracleResult} onClose={()=>{killAll();setOracleResult(null);}} onShare={shareDemonCall}/>}
       {showTutorial&&<Tutorial onClose={()=>setShowTutorial(false)} mode={mode}/>}
     </div>
   );
