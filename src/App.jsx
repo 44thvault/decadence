@@ -5,6 +5,10 @@ import INTERPRETATIONS from "./interpretations.js";
 const haptic = (ms=15) => { try { navigator.vibrate && navigator.vibrate(ms); } catch(e){} };
 const hapticHeavy = () => { try { navigator.vibrate && navigator.vibrate([30,50,80]); } catch(e){} };
 
+// ═══ FONTS ═══
+const SERIF = "'Cormorant Garamond', Georgia, serif";
+const MONO = "'JetBrains Mono', 'Courier New', monospace";
+
 // ═══ LOCAL STORAGE PERSISTENCE ═══
 const loadData = (key, def) => { try { const v = localStorage.getItem("decadence_"+key); return v ? JSON.parse(v) : def; } catch(e) { return def; } };
 const saveData = (key, val) => { try { localStorage.setItem("decadence_"+key, JSON.stringify(val)); } catch(e){} };
@@ -60,41 +64,19 @@ const DEMONS = {
 
 const ANGELIC_INDEX = ["Equilibrium","First Light","Duality's Gift","The Trident","Foundation Stone","Pentagrammic Seal","Hexadic Harmony","Seventh Gate","Octave Resonance","Novenary Apex","Decadic Completion"];
 
-// ═══ NUMOGRAM SVG (Card Back) ═══
-const NumogramSVG = ({ size = 120 }) => {
-  const Z = {3:[82,72],6:[128,48],2:[172,118],7:[188,178],5:[58,168],4:[38,218],1:[125,262],8:[125,328],9:[125,386],0:[125,436]};
-  const R=20,gr=8;
-  const gates=[["15",128,16],["21",105,96],["5",56,114],["10",82,268],["1",128,232],["28",162,248],["36",156,348],["45",92,390]];
-  const triDir={3:"r",6:"l",2:"l",7:"l",5:"r",4:"r",1:"d",8:"u",9:"d",0:"u"};
-  const mkTri=(cx,cy,d)=>{const s=6;if(d==="u")return(cx-s)+","+(cy+s*0.6)+" "+cx+","+(cy-s)+" "+(cx+s)+","+(cy+s*0.6);if(d==="d")return(cx-s)+","+(cy-s*0.6)+" "+cx+","+(cy+s)+" "+(cx+s)+","+(cy-s*0.6);if(d==="r")return(cx-s*0.6)+","+(cy-s)+" "+(cx+s)+","+cy+" "+(cx-s*0.6)+","+(cy+s);return(cx+s*0.6)+","+(cy-s)+" "+(cx-s)+","+cy+" "+(cx+s*0.6)+","+(cy+s);};
-  return (
-    <svg viewBox="0 0 230 470" width={size} height={size*(470/230)} style={{display:"block",filter:"drop-shadow(0 0 4px rgba(0,255,136,0.2))"}}>
-      <defs><radialGradient id="nbg" cx="50%" cy="30%" r="65%"><stop offset="0%" stopColor="#060d06"/><stop offset="100%" stopColor="#000"/></radialGradient><filter id="zgl"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      <rect width="230" height="470" rx="10" fill="url(#nbg)" stroke="#0f3" strokeWidth="0.6" opacity="0.85"/>
-      <path d={"M "+Z[6][0]+","+(Z[6][1]-R)+" C "+(Z[6][0]+10)+","+(Z[6][1]-55)+" "+(Z[3][0]-35)+","+(Z[3][1]-55)+" "+(Z[3][0]-25)+","+Z[3][1]+" Q "+(Z[3][0]-35)+","+(Z[3][1]+50)+" "+(Z[4][0]+5)+","+(Z[4][1]-10)} fill="none" stroke="#0f3" strokeWidth="0.8" opacity="0.3"/>
-      <path d={"M "+Z[2][0]+","+Z[2][1]+" C "+(Z[2][0]-20)+","+(Z[2][1]+35)+" "+(Z[5][0]+50)+","+(Z[5][1]-15)+" "+Z[5][0]+","+Z[5][1]} fill="none" stroke="#0f3" strokeWidth="1.2" opacity="0.25"/>
-      <polygon points={(Z[5][0]+8)+","+(Z[5][1]-5)+" "+(Z[5][0]-2)+","+Z[5][1]+" "+(Z[5][0]+8)+","+(Z[5][1]+5)} fill="#0f3" opacity="0.25"/>
-      <path d={"M "+Z[7][0]+","+Z[7][1]+" C "+(Z[7][0]-5)+","+(Z[7][1]+40)+" "+(Z[1][0]+40)+","+(Z[1][1]-15)+" "+(Z[1][0]+R)+","+Z[1][1]} fill="none" stroke="#0f3" strokeWidth="1.2" opacity="0.25"/>
-      <line x1={Z[4][0]+12} y1={Z[4][1]-12} x2={Z[5][0]-5} y2={Z[5][1]+12} stroke="#0f3" strokeWidth="3" opacity="0.12"/>
-      <line x1={Z[4][0]+14} y1={Z[4][1]-10} x2={Z[5][0]-3} y2={Z[5][1]+14} stroke="#0f3" strokeWidth="1.5" opacity="0.08" strokeDasharray="2,3"/>
-      {[[Z[6],Z[3]],[Z[6],Z[2]],[Z[3],Z[1]],[Z[4],Z[1]],[Z[1],Z[8]],[Z[8],Z[9]],[Z[9],Z[0]],[Z[2],Z[7]]].map(([a,b],i)=><line key={"f"+i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#0f3" strokeWidth="0.5" opacity="0.18"/>)}
-      {[[Z[9],Z[0]],[Z[8],Z[1]],[Z[7],Z[2]],[Z[6],Z[3]],[Z[5],Z[4]]].map(([a,b],i)=><line key={"s"+i} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke="#0f3" strokeWidth="0.4" opacity="0.1" strokeDasharray="3,4"/>)}
-      <ellipse cx={Z[9][0]} cy={(Z[9][1]+Z[0][1])/2} rx="22" ry="32" fill="none" stroke="#0f3" strokeWidth="0.4" opacity="0.08"/>
-      {Object.entries(Z).map(([z,[x,y]])=><g key={"z"+z} filter="url(#zgl)"><circle cx={x} cy={y} r={R} fill="#050905" stroke="#0f3" strokeWidth="1.2" opacity="0.85"/><polygon points={mkTri(x,y-1,triDir[z])} fill="#0f3" opacity="0.3"/><text x={x} y={y+7} textAnchor="middle" fill="#0f3" fontSize="16" fontFamily="monospace" fontWeight="bold" opacity="0.9">{z}</text></g>)}
-      {gates.map(([v,x,y])=><g key={"g"+v}><circle cx={x} cy={y} r={gr} fill="#020502" stroke="#0f3" strokeWidth="0.5" opacity="0.4"/><text x={x} y={y+3} textAnchor="middle" fill="#0f3" fontSize="7.5" fontFamily="monospace" fontStyle="italic" opacity="0.5">{v}</text></g>)}
-      <text x="115" y="462" textAnchor="middle" fill="#0f3" fontSize="6" fontFamily="monospace" opacity="0.25" letterSpacing="3">NUMOGRAM</text>
-    </svg>
-  );
-};
-
 // ═══ CARD COMPONENT ═══
 const SS={hearts:"\u2665",diamonds:"\u2666",clubs:"\u2663",spades:"\u2660"};
 const SC={hearts:"#ff1744",diamonds:"#ff1744",clubs:"#e0e0e0",spades:"#e0e0e0"};
-const Card=({card,faceUp,onClick,selected,matched,w=58,h=87})=>{const dv=card.value===0?"Q":card.value;const sc=SC[card.suit];return(<div onClick={()=>{if(onClick){haptic();onClick();}}} style={{width:w,height:h,perspective:600,cursor:onClick?"pointer":"default",flexShrink:0}}><div style={{width:"100%",height:"100%",position:"relative",transformStyle:"preserve-3d",transition:"transform 0.6s cubic-bezier(0.4,0,0.2,1)",transform:faceUp?"rotateY(180deg)":"rotateY(0)"}}><div style={{position:"absolute",width:"100%",height:"100%",backfaceVisibility:"hidden",borderRadius:6,background:"linear-gradient(145deg,#080e08,#000)",border:"1px solid "+(selected?"#0f3":"#1a3a1a"),display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",boxShadow:selected?"0 0 14px rgba(0,255,51,0.4)":"0 2px 6px rgba(0,0,0,0.6)"}}><NumogramSVG size={w*0.72}/><div style={{position:"absolute",inset:0,borderRadius:6,pointerEvents:"none",background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,51,0.03) 2px,rgba(0,255,51,0.03) 4px)"}}/></div><div style={{position:"absolute",width:"100%",height:"100%",backfaceVisibility:"hidden",borderRadius:6,transform:"rotateY(180deg)",background:matched?"linear-gradient(145deg,#0a1a0a,#001a00)":"linear-gradient(145deg,#1a1a2e,#0f0f1a)",border:"1px solid "+(matched?"#0f3":selected?"#0ff":"#333"),display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",boxShadow:matched?"0 0 14px rgba(0,255,51,0.3)":selected?"0 0 10px rgba(0,255,255,0.3)":"0 2px 6px rgba(0,0,0,0.6)",opacity:matched?0.4:1,transition:"opacity 0.3s"}}><div style={{position:"absolute",top:3,left:5,color:sc,fontSize:10,fontFamily:"monospace",lineHeight:1}}><div>{dv}</div><div style={{fontSize:9}}>{SS[card.suit]}</div></div><div style={{color:sc,fontSize:Math.max(18,w*0.3),fontWeight:"bold",fontFamily:"'Courier New',monospace",textShadow:"0 0 8px "+sc+"40"}}>{SS[card.suit]}</div><div style={{color:sc,fontSize:Math.max(14,w*0.23),fontWeight:"bold",fontFamily:"monospace"}}>{dv}</div><div style={{position:"absolute",bottom:3,right:5,color:sc,fontSize:10,fontFamily:"monospace",lineHeight:1,transform:"rotate(180deg)"}}><div>{dv}</div><div style={{fontSize:9}}>{SS[card.suit]}</div></div><div style={{position:"absolute",inset:0,borderRadius:6,pointerEvents:"none",background:"repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.07) 1px,rgba(0,0,0,0.07) 2px)"}}/></div></div></div>);};
+const Card=({card,faceUp,onClick,selected,matched,w=58,h=87})=>{const dv=card.value===0?"Q":card.value;const sc=SC[card.suit];return(<div onClick={()=>{if(onClick){haptic();onClick();}}} style={{width:w,height:h,perspective:600,cursor:onClick?"pointer":"default",flexShrink:0}}><div style={{width:"100%",height:"100%",position:"relative",transformStyle:"preserve-3d",transition:"transform 0.6s cubic-bezier(0.4,0,0.2,1)",transform:faceUp?"rotateY(180deg)":"rotateY(0)"}}>
+{/* BACK — numogram.png */}
+<div style={{position:"absolute",width:"100%",height:"100%",backfaceVisibility:"hidden",borderRadius:6,background:"#000",border:"1px solid "+(selected?"#0f3":"#1a3a1a"),display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",boxShadow:selected?"0 0 14px rgba(0,255,51,0.4)":"0 2px 6px rgba(0,0,0,0.6)"}}><img src="/numogram.png" alt="" style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:5,opacity:0.85}}/></div>
+{/* FACE */}
+<div style={{position:"absolute",width:"100%",height:"100%",backfaceVisibility:"hidden",borderRadius:6,transform:"rotateY(180deg)",background:matched?"linear-gradient(145deg,#0a1a0a,#001a00)":"linear-gradient(145deg,#1a1a2e,#0f0f1a)",border:"1px solid "+(matched?"#0f3":selected?"#0ff":"#333"),display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",boxShadow:matched?"0 0 14px rgba(0,255,51,0.3)":selected?"0 0 10px rgba(0,255,255,0.3)":"0 2px 6px rgba(0,0,0,0.6)",opacity:matched?0.4:1,transition:"opacity 0.3s"}}><div style={{position:"absolute",top:3,left:5,color:sc,fontSize:10,fontFamily:MONO,lineHeight:1}}><div>{dv}</div><div style={{fontSize:9}}>{SS[card.suit]}</div></div><div style={{color:sc,fontSize:Math.max(18,w*0.3),fontWeight:"bold",fontFamily:SERIF,textShadow:"0 0 8px "+sc+"40"}}>{SS[card.suit]}</div><div style={{color:sc,fontSize:Math.max(14,w*0.23),fontWeight:"bold",fontFamily:MONO}}>{dv}</div><div style={{position:"absolute",bottom:3,right:5,color:sc,fontSize:10,fontFamily:MONO,lineHeight:1,transform:"rotate(180deg)"}}><div>{dv}</div><div style={{fontSize:9}}>{SS[card.suit]}</div></div><div style={{position:"absolute",inset:0,borderRadius:6,pointerEvents:"none",background:"repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.07) 1px,rgba(0,0,0,0.07) 2px)"}}/></div>
+</div></div>);};
 
 // ═══ DEMON ORACLE OVERLAY ═══
-const DemonOracle=({result,onClose,onShare})=>{const[vis,setVis]=useState(false);const[gl,setGl]=useState(false);const glRef=useRef({x:0,y:0});useEffect(()=>{hapticHeavy();setTimeout(()=>setVis(true),100);const iv=setInterval(()=>{glRef.current={x:(Math.random()*2-1),y:(Math.random()*2-1)};setGl(true);setTimeout(()=>setGl(false),150);},4000+Math.random()*5000);return()=>clearInterval(iv);},[]);if(!result)return null;const ang=result.type==="angelic";const d=result.demon;const ac=ang?"#ffd700":"#ff0044";const Sec=({label,children})=>(<div style={{borderTop:"1px solid "+ac+"18",paddingTop:10,marginBottom:10}}><div style={{color:ac,fontSize:9,letterSpacing:3,marginBottom:4}}>{label}</div><div style={{color:"#bbb",fontSize:13,lineHeight:1.7}}>{children}</div></div>);
-  return(<div style={{position:"fixed",inset:0,zIndex:1000,background:"rgba(0,0,0,0.94)",display:"flex",alignItems:"center",justifyContent:"center",opacity:vis?1:0,transition:"opacity 0.8s",backdropFilter:"blur(10px)",padding:12}} onClick={onClose}><div onClick={e=>e.stopPropagation()} style={{maxWidth:400,width:"100%",maxHeight:"88vh",overflowY:"auto",background:"linear-gradient(180deg,#0a0a0a,#050510)",border:"1px solid "+ac+"30",borderRadius:4,padding:"22px 18px",fontFamily:"'Courier New',monospace",transform:gl?"translate("+glRef.current.x+"px,"+glRef.current.y+"px)":"none",boxShadow:"0 0 50px "+ac+"15",position:"relative",WebkitOverflowScrolling:"touch"}}><div style={{position:"absolute",inset:0,pointerEvents:"none",background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.015) 2px,rgba(255,255,255,0.015) 4px)"}}/>
+const DemonOracle=({result,onClose,onShare})=>{const[vis,setVis]=useState(false);const[gl,setGl]=useState(false);const glRef=useRef({x:0,y:0});useEffect(()=>{hapticHeavy();setTimeout(()=>setVis(true),100);const iv=setInterval(()=>{glRef.current={x:(Math.random()*2-1),y:(Math.random()*2-1)};setGl(true);setTimeout(()=>setGl(false),150);},4000+Math.random()*5000);return()=>clearInterval(iv);},[]);if(!result)return null;const ang=result.type==="angelic";const d=result.demon;const ac=ang?"#ffd700":"#ff0044";const Sec=({label,children})=>(<div style={{borderTop:"1px solid "+ac+"18",paddingTop:10,marginBottom:10}}><div style={{color:ac,fontSize:9,letterSpacing:3,marginBottom:4}}>{label}</div><div style={{color:"#ccc",fontSize:14,lineHeight:1.8,fontFamily:SERIF}}>{children}</div></div>);
+  return(<div style={{position:"fixed",inset:0,zIndex:1000,background:"rgba(0,0,0,0.94)",display:"flex",alignItems:"center",justifyContent:"center",opacity:vis?1:0,transition:"opacity 0.8s",backdropFilter:"blur(10px)",padding:12}} onClick={onClose}><div onClick={e=>e.stopPropagation()} style={{maxWidth:400,width:"100%",maxHeight:"88vh",overflowY:"auto",background:"linear-gradient(180deg,#0a0a0a,#050510)",border:"1px solid "+ac+"30",borderRadius:4,padding:"22px 18px",fontFamily:SERIF,transform:gl?"translate("+glRef.current.x+"px,"+glRef.current.y+"px)":"none",boxShadow:"0 0 50px "+ac+"15",position:"relative",WebkitOverflowScrolling:"touch"}}><div style={{position:"absolute",inset:0,pointerEvents:"none",background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.015) 2px,rgba(255,255,255,0.015) 4px)"}}/>
     {ang?(<><div style={{color:"#ffd700",fontSize:10,letterSpacing:5,marginBottom:6}}>◈ ANGELIC INDEX ◈</div><div style={{color:"#ffd700",fontSize:32,fontWeight:"bold",marginBottom:4}}>+{result.score}</div><div style={{color:"#ffd700aa",fontSize:14,marginBottom:14,lineHeight:1.6}}>{ANGELIC_INDEX[Math.min(result.score,ANGELIC_INDEX.length-1)]}</div><div style={{color:"#777",fontSize:12,lineHeight:1.6}}>Positive results contribute to the Angelic Index. Maximum single-game gain is 38.</div></>):(<>
       <div style={{color:ac,fontSize:10,letterSpacing:5,marginBottom:6}}>◈ DEMON CALL ◈</div>
       <div style={{color:ac,fontSize:24,fontWeight:"bold",marginBottom:2,textShadow:"0 0 15px "+ac+"50"}}>{d.name}</div>
@@ -106,19 +88,19 @@ const DemonOracle=({result,onClose,onShare})=>{const[vis,setVis]=useState(false)
       <Sec label="DESCRIPTION">{d.description}</Sec>
       <Sec label="OMEN"><em>{d.omen}</em></Sec>
       <Sec label="POWER">{d.power}</Sec>
-      {INTERPRETATIONS[result.score]&&<Sec label="◈ FULL INTERPRETATION ◈"><div style={{color:"#999",fontSize:12,lineHeight:1.8,fontStyle:"italic"}}>{INTERPRETATIONS[Math.min(result.score,44)]}</div></Sec>}
+      {INTERPRETATIONS[result.score]&&<Sec label="◈ FULL INTERPRETATION ◈"><div style={{color:"#aaa",fontSize:13,lineHeight:1.8,fontStyle:"italic",fontFamily:SERIF}}>{INTERPRETATIONS[Math.min(result.score,44)]}</div></Sec>}
       <div style={{color:"#444",fontSize:10,marginTop:14,textAlign:"center"}}>Score: -{result.score} · Aeon Terminated</div>
     </>)}
     <div style={{display:"flex",gap:8,marginTop:16}}>
-      <button onClick={onClose} style={{flex:1,padding:"12px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:"monospace",fontSize:12,letterSpacing:3,cursor:"pointer",borderRadius:2}}>DISMISS</button>
-      {!ang&&onShare&&<button onClick={()=>{haptic();onShare();}} style={{flex:1,padding:"12px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2}}>SHARE</button>}
+      <button onClick={onClose} style={{flex:1,padding:"12px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:MONO,fontSize:12,letterSpacing:3,cursor:"pointer",borderRadius:2}}>DISMISS</button>
+      {!ang&&onShare&&<button onClick={()=>{haptic();onShare();}} style={{flex:1,padding:"12px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:MONO,fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2}}>SHARE</button>}
     </div>
   </div></div>);
 };
 
 // ═══ TUTORIAL OVERLAY ═══
 const Tutorial=({onClose,mode})=>{const[step,setStep]=useState(0);const accent=mode==="subdecadence"?"#f0f":"#0f3";const steps=[{title:"THE ATLANTEAN CROSS",body:"Five cards are dealt face-up in a cross formation — these are your Set-1 pylons: Far Future, Destructive, Creative, Memories, and Deep Past."},{title:"THE CONCEALED SET",body:"Five more cards are dealt face-down as Set-2. Tap them left-to-right to reveal one at a time."},{title:"PAIR TO SUM "+(mode==="subdecadence"?"9":"10"),body:"When a Set-2 card is revealed, tap a Set-1 card to pair them. The pair must sum to "+(mode==="subdecadence"?"9 (Numogram Syzygies)":"10")+". Score = the difference between the two values."},{title:"THE ORACLE SPEAKS",body:"After all 5 Set-2 cards are revealed, end the round. Positive score = Angelic Index. Negative score = Demon Call from the Pandemonium Matrix. The Aeon ends."},{title:"AEON PERSISTENCE",body:"Your longest Aeon streak and highest scores are tracked. Demons called are logged in your history. Begin."}];
-  return(<div style={{position:"fixed",inset:0,zIndex:1100,background:"rgba(0,0,0,0.95)",display:"flex",alignItems:"center",justifyContent:"center",padding:16,backdropFilter:"blur(8px)"}}><div style={{maxWidth:360,width:"100%",background:"#0a0a0a",border:"1px solid "+accent+"30",borderRadius:4,padding:"28px 22px",fontFamily:"'Courier New',monospace"}}><div style={{color:accent,fontSize:9,letterSpacing:5,marginBottom:4}}>TUTORIAL · {step+1}/{steps.length}</div><div style={{color:accent,fontSize:16,fontWeight:"bold",marginBottom:12,letterSpacing:2}}>{steps[step].title}</div><div style={{color:"#999",fontSize:13,lineHeight:1.8,marginBottom:20}}>{steps[step].body}</div><div style={{display:"flex",gap:8}}>{step>0&&<button onClick={()=>{haptic();setStep(s=>s-1);}} style={{flex:1,padding:"10px",background:"transparent",border:"1px solid #333",color:"#666",fontFamily:"monospace",fontSize:11,letterSpacing:2,cursor:"pointer",borderRadius:2}}>BACK</button>}<button onClick={()=>{haptic();if(step<steps.length-1)setStep(s=>s+1);else{saveData("tutorialSeen",true);onClose();}}} style={{flex:1,padding:"10px",background:"transparent",border:"1px solid "+accent,color:accent,fontFamily:"monospace",fontSize:11,letterSpacing:2,cursor:"pointer",borderRadius:2}}>{step<steps.length-1?"NEXT":"BEGIN"}</button></div><div style={{display:"flex",justifyContent:"center",gap:6,marginTop:14}}>{steps.map((_,i)=><div key={i} style={{width:6,height:6,borderRadius:3,background:i===step?accent:"#333"}}/>)}</div></div></div>);
+  return(<div style={{position:"fixed",inset:0,zIndex:1100,background:"rgba(0,0,0,0.95)",display:"flex",alignItems:"center",justifyContent:"center",padding:16,backdropFilter:"blur(8px)"}}><div style={{maxWidth:360,width:"100%",background:"#0a0a0a",border:"1px solid "+accent+"30",borderRadius:4,padding:"28px 22px",fontFamily:MONO}}><div style={{color:accent,fontSize:9,letterSpacing:5,marginBottom:4}}>TUTORIAL · {step+1}/{steps.length}</div><div style={{color:accent,fontSize:16,fontWeight:"bold",marginBottom:12,letterSpacing:2}}>{steps[step].title}</div><div style={{color:"#bbb",fontSize:14,lineHeight:1.8,fontFamily:SERIF,marginBottom:20}}>{steps[step].body}</div><div style={{display:"flex",gap:8}}>{step>0&&<button onClick={()=>{haptic();setStep(s=>s-1);}} style={{flex:1,padding:"10px",background:"transparent",border:"1px solid #333",color:"#666",fontFamily:MONO,fontSize:11,letterSpacing:2,cursor:"pointer",borderRadius:2}}>BACK</button>}<button onClick={()=>{haptic();if(step<steps.length-1)setStep(s=>s+1);else{saveData("tutorialSeen",true);onClose();}}} style={{flex:1,padding:"10px",background:"transparent",border:"1px solid "+accent,color:accent,fontFamily:MONO,fontSize:11,letterSpacing:2,cursor:"pointer",borderRadius:2}}>{step<steps.length-1?"NEXT":"BEGIN"}</button></div><div style={{display:"flex",justifyContent:"center",gap:6,marginTop:14}}>{steps.map((_,i)=><div key={i} style={{width:6,height:6,borderRadius:3,background:i===step?accent:"#333"}}/>)}</div></div></div>);
 };
 
 // ═══ STANDALONE NUMOGRAM ORACLE ═══
@@ -241,7 +223,7 @@ export default function DecadenceGame(){
   const vignetteColor=isSub?"rgba(40,0,40,0.6)":"rgba(0,0,0,0.5)";
 
   return(
-    <div style={{minHeight:"100dvh",width:"100%",background:isSub?"#050005":"#000",color:"#ccc",fontFamily:"'Courier New',monospace",position:"relative",overflow:"hidden",WebkitTapHighlightColor:"transparent",transition:"background 0.5s"}}>
+    <div style={{minHeight:"100dvh",width:"100%",background:isSub?"#050005":"#000",color:"#ccc",fontFamily:SERIF,position:"relative",overflow:"hidden",WebkitTapHighlightColor:"transparent",transition:"background 0.5s"}}>
       <canvas ref={canvasRef} style={{position:"fixed",inset:0,zIndex:0,pointerEvents:"none",opacity:isSub?0.6:0.5}}/>
       <div style={{position:"fixed",inset:0,zIndex:1,pointerEvents:"none",background:bgOverlay,transition:"background 0.5s"}}/>
       <div style={{position:"fixed",inset:0,zIndex:1,pointerEvents:"none",background:"radial-gradient(ellipse at center,transparent 50%,"+vignetteColor+" 100%)"}}/>
@@ -257,8 +239,8 @@ export default function DecadenceGame(){
 
         {/* MODE TOGGLE + CONTROLS */}
         <div style={{display:"flex",justifyContent:"center",gap:6,marginBottom:12,flexWrap:"wrap"}}>
-          <button onClick={()=>{haptic();setMode(m=>m==="decadence"?"subdecadence":"decadence");}} style={{padding:"5px 12px",background:"transparent",border:"1px solid "+accent+"40",color:accent,fontFamily:"monospace",fontSize:9,letterSpacing:2,cursor:"pointer",borderRadius:2}}>⇄ {isSub?"DECADENCE":"SUBDECADENCE"}</button>
-          {gamePhase==="menu"&&<button onClick={()=>{haptic();setShowTutorial(true);}} style={{padding:"5px 12px",background:"transparent",border:"1px solid #333",color:"#555",fontFamily:"monospace",fontSize:9,letterSpacing:2,cursor:"pointer",borderRadius:2}}>? TUTORIAL</button>}
+          <button onClick={()=>{haptic();setMode(m=>m==="decadence"?"subdecadence":"decadence");}} style={{padding:"5px 12px",background:"transparent",border:"1px solid "+accent+"40",color:accent,fontFamily:MONO,fontSize:9,letterSpacing:2,cursor:"pointer",borderRadius:2}}>⇄ {isSub?"DECADENCE":"SUBDECADENCE"}</button>
+          {gamePhase==="menu"&&<button onClick={()=>{haptic();setShowTutorial(true);}} style={{padding:"5px 12px",background:"transparent",border:"1px solid #333",color:"#555",fontFamily:MONO,fontSize:9,letterSpacing:2,cursor:"pointer",borderRadius:2}}>? TUTORIAL</button>}
         </div>
 
         {/* SCORE BAR */}
@@ -271,8 +253,8 @@ export default function DecadenceGame(){
         {/* ═══ MENU ═══ */}
         {gamePhase==="menu"&&(
           <div style={{textAlign:"center",paddingTop:12}}>
-            <div style={{marginBottom:20}}><NumogramSVG size={130}/></div>
-            <button onClick={startAeon} style={{padding:"12px 36px",background:"transparent",border:"1px solid "+accent,color:accent,fontFamily:"monospace",fontSize:14,letterSpacing:5,cursor:"pointer",borderRadius:2,boxShadow:"0 0 25px "+accent+"20",marginBottom:10,display:"block",margin:"0 auto 10px"}}>BEGIN AEON</button>
+            <div style={{marginBottom:20,display:"flex",justifyContent:"center"}}><img src="/numogram.png" alt="Numogram" style={{width:130,height:"auto",borderRadius:6,opacity:0.85,filter:"drop-shadow(0 0 12px rgba(0,255,51,0.2))"}}/></div>
+            <button onClick={startAeon} style={{padding:"12px 36px",background:"transparent",border:"1px solid "+accent,color:accent,fontFamily:MONO,fontSize:14,letterSpacing:5,cursor:"pointer",borderRadius:2,boxShadow:"0 0 25px "+accent+"20",marginBottom:10,display:"block",margin:"0 auto 10px"}}>BEGIN AEON</button>
 
 
 
@@ -285,7 +267,7 @@ export default function DecadenceGame(){
 
             {/* DEMON LOG */}
             {demonLog.length>0&&(<div style={{marginBottom:16}}>
-              <button onClick={()=>setShowHistory(!showHistory)} style={{padding:"4px 12px",background:"transparent",border:"1px solid #222",color:"#444",fontFamily:"monospace",fontSize:9,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showHistory?8:0}}>{showHistory?"HIDE":"SHOW"} DEMON LOG ({demonLog.length})</button>
+              <button onClick={()=>setShowHistory(!showHistory)} style={{padding:"4px 12px",background:"transparent",border:"1px solid #222",color:"#444",fontFamily:MONO,fontSize:9,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showHistory?8:0}}>{showHistory?"HIDE":"SHOW"} DEMON LOG ({demonLog.length})</button>
               {showHistory&&<div style={{maxHeight:200,overflowY:"auto",border:"1px solid #1a1a1a",borderRadius:2,padding:"6px 8px",background:"rgba(0,0,0,0.3)"}}>
                 {demonLog.map((e,i)=><div key={i} style={{fontSize:10,color:"#666",marginBottom:4,borderBottom:"1px solid #111",paddingBottom:4}}>
                   <span style={{color:"#f04"}}>{e.demon}</span> <span style={{color:"#444"}}>Mesh-{e.mesh} · -{e.score} · Rnd {e.rounds} · {e.mode}</span>
@@ -296,14 +278,14 @@ export default function DecadenceGame(){
             {/* RULES */}
             <div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(isSub?"#1a001a":"#1a1a1a"),borderRadius:2,background:isSub?"rgba(20,0,20,0.3)":"rgba(0,0,0,0.3)"}}>
               <div style={{color:accent,fontSize:10,letterSpacing:3,marginBottom:8}}>RULES</div>
-              <div style={{color:"#777",fontSize:12,lineHeight:1.8}}>{isSub?"40 cards (1-9 x 4 suits + 4 Queens valued 0). Five dealt face-up on the Atlantean Cross, five face-down. Reveal Set-2 cards and pair with Set-1 to sum to 9 (Numogram Syzygies). Pairs score by difference. Unpaired cards penalize. Negative results call demons.":"36 cards (1-9 x 4 suits). Five face-up on the Atlantean Cross (Set-1), five face-down (Set-2). Reveal and pair to sum to 10. Pairs score by difference (5+5=0, 9+1=8). Unpaired cards penalize. An Aeon ends on first negative result."}</div>
+              <div style={{color:"#999",fontSize:14,lineHeight:1.9,fontFamily:SERIF}}>{isSub?"40 cards (1-9 x 4 suits + 4 Queens valued 0). Five dealt face-up on the Atlantean Cross, five face-down. Reveal Set-2 cards and pair with Set-1 to sum to 9 (Numogram Syzygies). Pairs score by difference. Unpaired cards penalize. Negative results call demons.":"36 cards (1-9 x 4 suits). Five face-up on the Atlantean Cross (Set-1), five face-down (Set-2). Reveal and pair to sum to 10. Pairs score by difference (5+5=0, 9+1=8). Unpaired cards penalize. An Aeon ends on first negative result."}</div>
             </div>
 
             {/* INSTALL APP */}
             {installPrompt&&!isInstalled&&(
               <button onClick={()=>{haptic();installPrompt.prompt();installPrompt.userChoice.then((r)=>{if(r.outcome==="accepted")setIsInstalled(true);setInstallPrompt(null);});}} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",marginTop:14,padding:"12px 16px",background:"linear-gradient(135deg,"+accent+"08,"+accent+"04)",border:"1px solid "+accent+"25",borderRadius:2,cursor:"pointer",transition:"all 0.3s"}}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{opacity:0.7}}><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-                <span style={{color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:3,opacity:0.7}}>INSTALL APP</span>
+                <span style={{color:accent,fontFamily:MONO,fontSize:10,letterSpacing:3,opacity:0.7}}>INSTALL APP</span>
               </button>
             )}
           </div>
@@ -335,8 +317,8 @@ export default function DecadenceGame(){
           </div>
 
           <div style={{display:"flex",justifyContent:"center",gap:8,marginTop:16}}>
-            {gamePhase==="pairing"&&<button onClick={skipPair} style={{padding:"8px 18px",background:"transparent",border:"1px solid #ff444440",color:"#ff4444",fontFamily:"monospace",fontSize:11,letterSpacing:2,cursor:"pointer",borderRadius:2}}>SKIP</button>}
-            {allRevealed&&gamePhase!=="pairing"&&<button onClick={endRound} style={{padding:"8px 22px",background:"transparent",border:"1px solid "+accent,color:accent,fontFamily:"monospace",fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2,boxShadow:"0 0 15px "+accent+"18"}}>END ROUND</button>}
+            {gamePhase==="pairing"&&<button onClick={skipPair} style={{padding:"8px 18px",background:"transparent",border:"1px solid #ff444440",color:"#ff4444",fontFamily:MONO,fontSize:11,letterSpacing:2,cursor:"pointer",borderRadius:2}}>SKIP</button>}
+            {allRevealed&&gamePhase!=="pairing"&&<button onClick={endRound} style={{padding:"8px 22px",background:"transparent",border:"1px solid "+accent,color:accent,fontFamily:MONO,fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2,boxShadow:"0 0 15px "+accent+"18"}}>END ROUND</button>}
           </div>
 
           {roundResults.length>0&&(<div style={{marginTop:12,padding:"8px 10px",background:"rgba(0,0,0,0.35)",border:"1px solid #1a1a1a",borderRadius:2,fontSize:11}}>
@@ -351,7 +333,7 @@ export default function DecadenceGame(){
           <div style={{color:"#ffd700",fontSize:36,fontWeight:"bold",marginBottom:6}}>+{score}</div>
           <div style={{color:"#888",fontSize:12,marginBottom:6}}>Aeon Total: {aeonScore}</div>
           <div style={{color:"#ffd70088",fontSize:13,fontStyle:"italic",marginBottom:24}}>{ANGELIC_INDEX[Math.min(score,ANGELIC_INDEX.length-1)]}</div>
-          <button onClick={dealRound} style={{padding:"10px 28px",background:"transparent",border:"1px solid #ffd700",color:"#ffd700",fontFamily:"monospace",fontSize:12,letterSpacing:4,cursor:"pointer",borderRadius:2}}>NEXT ROUND</button>
+          <button onClick={dealRound} style={{padding:"10px 28px",background:"transparent",border:"1px solid #ffd700",color:"#ffd700",fontFamily:MONO,fontSize:12,letterSpacing:4,cursor:"pointer",borderRadius:2}}>NEXT ROUND</button>
         </div>)}
 
         {/* ═══ AEON END ═══ */}
@@ -360,8 +342,8 @@ export default function DecadenceGame(){
           <div style={{color:"#f04",fontSize:30,fontWeight:"bold",marginBottom:6}}>DEMON CALL</div>
           <div style={{color:"#888",fontSize:12,marginBottom:24}}>Final Aeon: {aeonScore} · {roundNum} rounds</div>
           <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
-            <button onClick={()=>setOracleResult({type:"demonic",score:Math.abs(score),demon:DEMONS[Math.min(Math.abs(score),44)]||DEMONS[0]})} style={{padding:"10px 20px",background:"transparent",border:"1px solid #f04",color:"#f04",fontFamily:"monospace",fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2}}>VIEW ORACLE</button>
-            <button onClick={()=>{haptic();setGamePhase("menu");}} style={{padding:"10px 20px",background:"transparent",border:"1px solid #44444440",color:"#666",fontFamily:"monospace",fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2}}>NEW AEON</button>
+            <button onClick={()=>setOracleResult({type:"demonic",score:Math.abs(score),demon:DEMONS[Math.min(Math.abs(score),44)]||DEMONS[0]})} style={{padding:"10px 20px",background:"transparent",border:"1px solid #f04",color:"#f04",fontFamily:MONO,fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2}}>VIEW ORACLE</button>
+            <button onClick={()=>{haptic();setGamePhase("menu");}} style={{padding:"10px 20px",background:"transparent",border:"1px solid #44444440",color:"#666",fontFamily:MONO,fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:2}}>NEW AEON</button>
           </div>
         </div>)}
 
