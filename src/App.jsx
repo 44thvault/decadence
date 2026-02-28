@@ -67,7 +67,7 @@ const ANGELIC_INDEX = ["Equilibrium","First Light","Duality's Gift","The Trident
 // ═══ CARD COMPONENT ═══
 const SS={hearts:"\u2665",diamonds:"\u2666",clubs:"\u2663",spades:"\u2660"};
 const SC={hearts:"#ff1744",diamonds:"#ff1744",clubs:"#e0e0e0",spades:"#e0e0e0"};
-const Card=({card,faceUp,onClick,selected,matched,w=58,h=87})=>{const dv=card.value===0?"Q":card.value;const sc=SC[card.suit];return(<div onClick={()=>{if(onClick){haptic();onClick();}}} style={{width:w,height:h,perspective:600,cursor:onClick?"pointer":"default",flexShrink:0}}><div style={{width:"100%",height:"100%",position:"relative",transformStyle:"preserve-3d",transition:"transform 0.6s cubic-bezier(0.4,0,0.2,1)",transform:faceUp?"rotateY(180deg)":"rotateY(0)"}}>
+const Card=({card,faceUp,onClick,selected,matched,w=52,h=105})=>{const dv=card.value===0?"Q":card.value;const sc=SC[card.suit];return(<div onClick={()=>{if(onClick){haptic();onClick();}}} style={{width:w,height:h,perspective:600,cursor:onClick?"pointer":"default",flexShrink:0}}><div style={{width:"100%",height:"100%",position:"relative",transformStyle:"preserve-3d",transition:"transform 0.6s cubic-bezier(0.4,0,0.2,1)",transform:faceUp?"rotateY(180deg)":"rotateY(0)"}}>
 {/* BACK — numogram.png */}
 <div style={{position:"absolute",width:"100%",height:"100%",backfaceVisibility:"hidden",borderRadius:6,background:"#000",border:"1px solid "+(selected?"#0f3":"#1a3a1a"),display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",boxShadow:selected?"0 0 14px rgba(0,255,51,0.4)":"0 2px 6px rgba(0,0,0,0.6)"}}><img src="/numogram.png" alt="" style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:5,opacity:0.85}}/></div>
 {/* FACE */}
@@ -128,8 +128,6 @@ export default function DecadenceGame(){
   const[showTutorial,setShowTutorial]=useState(false);
   const[showHistory,setShowHistory]=useState(false);
   
-  const[installPrompt,setInstallPrompt]=useState(null);
-  const[isInstalled,setIsInstalled]=useState(false);
   const glitchOffset=useRef({x:0,y:0});
   const canvasRef=useRef(null);
   const animRef=useRef(null);
@@ -216,7 +214,7 @@ export default function DecadenceGame(){
   };
 
   const allRevealed=revealedIndex>=4;
-  const CW=58,CH=87;
+  const CW=52,CH=105;
 
   // ═══ SUBDECADENCE VISUAL OVERHAUL ═══
   const bgOverlay=isSub?"repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(255,0,255,0.04) 1px,rgba(255,0,255,0.04) 3px)":"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px)";
@@ -253,7 +251,7 @@ export default function DecadenceGame(){
         {/* ═══ MENU ═══ */}
         {gamePhase==="menu"&&(
           <div style={{textAlign:"center",paddingTop:12}}>
-            <div style={{marginBottom:20,display:"flex",justifyContent:"center"}}><img src="/numogram.png" alt="Numogram" style={{width:130,height:"auto",borderRadius:6,opacity:0.85,filter:"drop-shadow(0 0 12px rgba(0,255,51,0.2))"}}/></div>
+            <div style={{marginBottom:20,display:"flex",justifyContent:"center"}}><img src="/numogram.png" alt="Numogram" style={{height:180,width:"auto",borderRadius:6,opacity:0.85,filter:"drop-shadow(0 0 12px rgba(0,255,51,0.2))"}}/></div>
             <button onClick={startAeon} style={{padding:"12px 36px",background:"transparent",border:"1px solid "+accent,color:accent,fontFamily:"monospace",fontSize:14,letterSpacing:5,cursor:"pointer",borderRadius:2,boxShadow:"0 0 25px "+accent+"20",marginBottom:10,display:"block",margin:"0 auto 10px"}}>BEGIN AEON</button>
 
 
@@ -281,13 +279,6 @@ export default function DecadenceGame(){
               <div style={{color:"#999",fontSize:14,lineHeight:1.9,fontFamily:"'Courier New',monospace"}}>{isSub?"40 cards (1-9 x 4 suits + 4 Queens valued 0). Five dealt face-up on the Atlantean Cross, five face-down. Reveal Set-2 cards and pair with Set-1 to sum to 9 (Numogram Syzygies). Pairs score by difference. Unpaired cards penalize. Negative results call demons.":"36 cards (1-9 x 4 suits). Five face-up on the Atlantean Cross (Set-1), five face-down (Set-2). Reveal and pair to sum to 10. Pairs score by difference (5+5=0, 9+1=8). Unpaired cards penalize. An Aeon ends on first negative result."}</div>
             </div>
 
-            {/* INSTALL APP */}
-            {installPrompt&&!isInstalled&&(
-              <button onClick={()=>{haptic();installPrompt.prompt();installPrompt.userChoice.then((r)=>{if(r.outcome==="accepted")setIsInstalled(true);setInstallPrompt(null);});}} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,width:"100%",marginTop:14,padding:"12px 16px",background:"linear-gradient(135deg,"+accent+"08,"+accent+"04)",border:"1px solid "+accent+"25",borderRadius:2,cursor:"pointer",transition:"all 0.3s"}}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{opacity:0.7}}><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-                <span style={{color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:3,opacity:0.7}}>INSTALL APP</span>
-              </button>
-            )}
           </div>
         )}
 
