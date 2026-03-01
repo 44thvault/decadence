@@ -232,7 +232,7 @@ export default function DecadenceGame(){
       <div style={{position:"fixed",inset:0,zIndex:1,pointerEvents:"none",background:"radial-gradient(ellipse at center,transparent 50%,"+vignetteColor+" 100%)"}}/>
       {isSub&&<div style={{position:"fixed",inset:0,zIndex:1,pointerEvents:"none",background:"radial-gradient(circle at 50% 30%,rgba(80,0,80,0.08) 0%,transparent 60%)"}}/>}
 
-      <div style={{position:"relative",zIndex:2,maxWidth:400,margin:"0 auto",padding:"6px 8px 10px",minHeight:"100dvh",maxHeight:"100dvh",overflow:gamePhase==="menu"?"auto":"hidden"}}>
+      <div style={{position:"relative",zIndex:2,maxWidth:400,margin:"0 auto",padding:"6px 8px 10px",minHeight:"100dvh",overflow:gamePhase==="menu"?"auto":"auto"}}>
 
         <header style={{textAlign:"center",marginBottom:6,paddingTop:4}}>
           <div style={{fontSize:7,letterSpacing:5,color:accent,opacity:0.4,marginBottom:1}}>◈ PANDEMONIUM MATRIX ◈</div>
