@@ -64,7 +64,7 @@ const ANGELIC_INDEX = ["Equilibrium","First Light","Duality's Gift","The Trident
 // ═══ CARD COMPONENT ═══
 const SS={hearts:"\u2665",diamonds:"\u2666",clubs:"\u2663",spades:"\u2660"};
 const SC={hearts:"#ff1744",diamonds:"#ff1744",clubs:"#e0e0e0",spades:"#e0e0e0"};
-const Card=({card,faceUp,onClick,selected,matched,w=50,h=88})=>{const dv=card.value===0?"Q":card.value;const sc=SC[card.suit];return(<div onClick={()=>{if(onClick){haptic();onClick();}}} style={{width:w,height:h,perspective:600,cursor:onClick?"pointer":"default",flexShrink:0}}><div style={{width:"100%",height:"100%",position:"relative",transformStyle:"preserve-3d",transition:"transform 0.6s cubic-bezier(0.4,0,0.2,1)",transform:faceUp?"rotateY(180deg)":"rotateY(0)"}}>
+const Card=({card,faceUp,onClick,selected,matched,w=60,h=106})=>{const dv=card.value===0?"Q":card.value;const sc=SC[card.suit];return(<div onClick={()=>{if(onClick){haptic();onClick();}}} style={{width:w,height:h,perspective:600,cursor:onClick?"pointer":"default",flexShrink:0}}><div style={{width:"100%",height:"100%",position:"relative",transformStyle:"preserve-3d",transition:"transform 0.6s cubic-bezier(0.4,0,0.2,1)",transform:faceUp?"rotateY(180deg)":"rotateY(0)"}}>
 {/* BACK — numogram.png */}
 <div style={{position:"absolute",width:"100%",height:"100%",backfaceVisibility:"hidden",borderRadius:6,background:"#000",border:"1px solid "+(selected?"#0f3":"#1a3a1a"),display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",boxShadow:selected?"0 0 14px rgba(0,255,51,0.4)":"0 2px 6px rgba(0,0,0,0.6)"}}><img src="/numogram.png" alt="" style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:5,opacity:0.85}}/></div>
 {/* FACE */}
@@ -72,12 +72,12 @@ const Card=({card,faceUp,onClick,selected,matched,w=50,h=88})=>{const dv=card.va
 </div></div>);};
 
 // ═══ DEMON ORACLE OVERLAY ═══
-const DemonOracle=({result,onClose,onShare})=>{const[vis,setVis]=useState(false);const[gl,setGl]=useState(false);const glRef=useRef({x:0,y:0});useEffect(()=>{hapticHeavy();setTimeout(()=>setVis(true),100);const iv=setInterval(()=>{glRef.current={x:(Math.random()*2-1),y:(Math.random()*2-1)};setGl(true);setTimeout(()=>setGl(false),150);},4000+Math.random()*5000);return()=>clearInterval(iv);},[]);if(!result)return null;const ang=result.type==="angelic";const d=result.demon;const ac=ang?"#ffd700":"#ff0044";const Sec=({label,children})=>(<div style={{borderTop:"1px solid "+ac+"18",paddingTop:10,marginBottom:10}}><div style={{color:ac,fontSize:9,letterSpacing:3,marginBottom:4}}>{label}</div><div style={{color:"#bbb",fontSize:13,lineHeight:1.7}}>{children}</div></div>);
-  return(<div style={{position:"fixed",inset:0,zIndex:1000,background:"rgba(0,0,0,0.94)",display:"flex",alignItems:"center",justifyContent:"center",opacity:vis?1:0,transition:"opacity 0.8s",backdropFilter:"blur(10px)",padding:12}} onClick={onClose}><div onClick={e=>e.stopPropagation()} style={{maxWidth:400,width:"100%",maxHeight:"88vh",overflowY:"auto",background:"linear-gradient(180deg,#0a0a0a,#050510)",border:"1px solid "+ac+"30",borderRadius:4,padding:"22px 18px",fontFamily:"'Courier New',monospace",transform:gl?"translate("+glRef.current.x+"px,"+glRef.current.y+"px)":"none",boxShadow:"0 0 50px "+ac+"15",position:"relative",WebkitOverflowScrolling:"touch"}}><div style={{position:"absolute",inset:0,pointerEvents:"none",background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.015) 2px,rgba(255,255,255,0.015) 4px)"}}/>
-    {ang?(<><div style={{color:"#ffd700",fontSize:10,letterSpacing:5,marginBottom:6}}>◈ ANGELIC INDEX ◈</div><div style={{color:"#ffd700",fontSize:32,fontWeight:"bold",marginBottom:4}}>+{result.score}</div><div style={{color:"#ffd700aa",fontSize:14,marginBottom:14,lineHeight:1.6}}>{ANGELIC_INDEX[Math.min(result.score,ANGELIC_INDEX.length-1)]}</div><div style={{color:"#777",fontSize:12,lineHeight:1.6}}>Positive results contribute to the Angelic Index. Maximum single-game gain is 38.</div></>):(<>
-      <div style={{color:ac,fontSize:10,letterSpacing:5,marginBottom:6}}>◈ DEMON CALL ◈</div>
-      <div style={{color:ac,fontSize:24,fontWeight:"bold",marginBottom:2,textShadow:"0 0 15px "+ac+"50"}}>{d.name}</div>
-      <div style={{color:"#666",fontSize:12,marginBottom:14}}>Mesh-{d.mesh} · {d.type} · [{d.netSpan}]</div>
+const DemonOracle=({result,onClose,onShare})=>{const[vis,setVis]=useState(false);const[gl,setGl]=useState(false);const glRef=useRef({x:0,y:0});useEffect(()=>{hapticHeavy();setTimeout(()=>setVis(true),100);const iv=setInterval(()=>{glRef.current={x:(Math.random()*2-1),y:(Math.random()*2-1)};setGl(true);setTimeout(()=>setGl(false),150);},4000+Math.random()*5000);return()=>clearInterval(iv);},[]);if(!result)return null;const ang=result.type==="angelic";const d=result.demon;const ac=ang?"#ffd700":"#ff0044";const Sec=({label,children})=>(<div style={{borderTop:"1px solid "+ac+"18",paddingTop:12,marginBottom:12}}><div style={{color:ac,fontSize:11,letterSpacing:3,marginBottom:6}}>{label}</div><div style={{color:"#ccc",fontSize:16,lineHeight:1.8}}>{children}</div></div>);
+  return(<div style={{position:"fixed",inset:0,zIndex:1000,background:"rgba(0,0,0,0.94)",display:"flex",alignItems:"center",justifyContent:"center",opacity:vis?1:0,transition:"opacity 0.8s",backdropFilter:"blur(10px)",padding:12}} onClick={onClose}><div onClick={e=>e.stopPropagation()} style={{maxWidth:400,width:"100%",maxHeight:"88vh",overflowY:"auto",background:"linear-gradient(180deg,#0a0a0a,#050510)",border:"1px solid "+ac+"30",borderRadius:4,padding:"24px 20px",fontFamily:"'Courier New',monospace",transform:gl?"translate("+glRef.current.x+"px,"+glRef.current.y+"px)":"none",boxShadow:"0 0 50px "+ac+"15",position:"relative",WebkitOverflowScrolling:"touch"}}><div style={{position:"absolute",inset:0,pointerEvents:"none",background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.015) 2px,rgba(255,255,255,0.015) 4px)"}}/>
+    {ang?(<><div style={{color:"#ffd700",fontSize:12,letterSpacing:5,marginBottom:8}}>◈ ANGELIC INDEX ◈</div><div style={{color:"#ffd700",fontSize:38,fontWeight:"bold",marginBottom:6}}>+{result.score}</div><div style={{color:"#ffd700aa",fontSize:17,marginBottom:16,lineHeight:1.7}}>{ANGELIC_INDEX[Math.min(result.score,ANGELIC_INDEX.length-1)]}</div><div style={{color:"#888",fontSize:15,lineHeight:1.7}}>Positive results contribute to the Angelic Index. Maximum single-game gain is 38.</div></>):(<>
+      <div style={{color:ac,fontSize:12,letterSpacing:5,marginBottom:8}}>◈ DEMON CALL ◈</div>
+      <div style={{color:ac,fontSize:30,fontWeight:"bold",marginBottom:4,textShadow:"0 0 15px "+ac+"50"}}>{d.name}</div>
+      <div style={{color:"#888",fontSize:14,marginBottom:16}}>Mesh-{d.mesh} · {d.type} · [{d.netSpan}]</div>
       <Sec label="ZONE PASSAGE">{d.zone}</Sec>
       {d.syzygy&&<Sec label="SYZYGY">{d.syzygy}</Sec>}
       <Sec label="DOMAIN">{d.domain}</Sec>
@@ -85,12 +85,12 @@ const DemonOracle=({result,onClose,onShare})=>{const[vis,setVis]=useState(false)
       <Sec label="DESCRIPTION">{d.description}</Sec>
       <Sec label="OMEN"><em>{d.omen}</em></Sec>
       <Sec label="POWER">{d.power}</Sec>
-      {INTERPRETATIONS[result.score]&&<Sec label="◈ FULL INTERPRETATION ◈"><div style={{color:"#999",fontSize:12,lineHeight:1.8,fontStyle:"italic"}}>{INTERPRETATIONS[Math.min(result.score,44)]}</div></Sec>}
-      <div style={{color:"#444",fontSize:10,marginTop:14,textAlign:"center"}}>Score: -{result.score} · Aeon Terminated</div>
+      {INTERPRETATIONS[result.score]&&<Sec label="◈ FULL INTERPRETATION ◈"><div style={{color:"#aaa",fontSize:15,lineHeight:1.9,fontStyle:"italic"}}>{INTERPRETATIONS[Math.min(result.score,44)]}</div></Sec>}
+      <div style={{color:"#555",fontSize:12,marginTop:16,textAlign:"center"}}>Score: -{result.score} · Aeon Terminated</div>
     </>)}
-    <div style={{display:"flex",gap:8,marginTop:16}}>
-      <button onClick={onClose} style={{flex:1,padding:"12px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:"monospace",fontSize:12,letterSpacing:3,cursor:"pointer",borderRadius:2}}>DISMISS</button>
-      {!ang&&onShare&&<button onClick={()=>{haptic();onShare();}} style={{flex:1,padding:"12px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2}}>SHARE</button>}
+    <div style={{display:"flex",gap:8,marginTop:18}}>
+      <button onClick={onClose} style={{flex:1,padding:"14px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:"monospace",fontSize:13,letterSpacing:3,cursor:"pointer",borderRadius:2}}>DISMISS</button>
+      {!ang&&onShare&&<button onClick={()=>{haptic();onShare();}} style={{flex:1,padding:"14px",background:"transparent",border:"1px solid "+ac+"40",color:ac,fontFamily:"monospace",fontSize:12,letterSpacing:2,cursor:"pointer",borderRadius:2}}>SHARE</button>}
     </div>
   </div></div>);
 };
@@ -210,7 +210,16 @@ export default function DecadenceGame(){
   };
 
   const allRevealed=revealedIndex>=4;
-  const CW=50,CH=88;
+  
+  // Responsive card sizing — fills viewport on any screen
+  // Fixed UI ~210px, remaining split across 4 card heights
+  // Also constrain by width: 5 cards + gaps must fit in ~390px
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 700;
+  const vw = typeof window !== 'undefined' ? Math.min(window.innerWidth, 400) : 400;
+  const fromHeight = Math.floor((vh - 210) / 4);
+  const fromWidth = Math.floor((vw - 30) / 5 * 1.77); // 5 cards in set-2 row
+  const CH = Math.max(75, Math.min(130, fromHeight, fromWidth));
+  const CW = Math.round(CH / 1.77);
 
   // ═══ SUBDECADENCE VISUAL OVERHAUL ═══
   const bgOverlay=isSub?"repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(255,0,255,0.04) 1px,rgba(255,0,255,0.04) 3px)":"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px)";
@@ -300,7 +309,7 @@ export default function DecadenceGame(){
 
           <div>
             <div style={{color:"#444",fontSize:8,letterSpacing:3,textAlign:"center",marginBottom:4}}>◈ SET-2 · CONCEALED ◈</div>
-            <div style={{display:"flex",justifyContent:"center",gap:4}}>
+            <div style={{display:"flex",justifyContent:"center",gap:Math.max(3, Math.min(5, Math.floor((400 - 5*CW)/6)))}}>
               {set2.map((card,i)=><Card key={card.id} card={card} faceUp={i<=revealedIndex} selected={selectedSet2===i} matched={matchedSet2.has(i)} onClick={gamePhase==="playing"&&i===revealedIndex+1&&!matchedSet2.has(i)?()=>revealNext(i):null} w={CW} h={CH}/>)}
             </div>
           </div>
