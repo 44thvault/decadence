@@ -156,15 +156,7 @@ export default function DecadenceGame(){
   // Check first visit
   useEffect(()=>{if(!loadData("tutorialSeen",false))setShowTutorial(true);},[]);
 
-  // PWA install prompt
-  useEffect(()=>{
-    // Detect if already installed
-    if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone){setIsInstalled(true);return;}
-    const handler=(e)=>{e.preventDefault();setInstallPrompt(e);};
-    window.addEventListener('beforeinstallprompt',handler);
-    window.addEventListener('appinstalled',()=>{setIsInstalled(true);setInstallPrompt(null);});
-    return()=>window.removeEventListener('beforeinstallprompt',handler);
-  },[]);
+
 
   const createDeck=useCallback(()=>{
     const suits=["hearts","diamonds","clubs","spades"],cards=[];
