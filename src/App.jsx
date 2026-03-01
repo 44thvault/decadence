@@ -101,7 +101,6 @@ const Tutorial=({onClose,mode})=>{const[step,setStep]=useState(0);const accent=m
 };
 
 // ═══ STANDALONE NUMOGRAM ORACLE ═══
-const PYLON_LABELS=["FAR FUTURE","DESTRUCTIVE","CREATIVE","MEMORIES","DEEP PAST"];
 
 // ═══ MAIN GAME ═══
 export default function DecadenceGame(){
@@ -287,11 +286,13 @@ export default function DecadenceGame(){
           <div style={{marginBottom:6}}>
             <div style={{color:"#444",fontSize:8,letterSpacing:3,textAlign:"center",marginBottom:4}}>◈ SET-1 · ATLANTEAN CROSS ◈</div>
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
-              <div style={{textAlign:"center"}}><div style={{fontSize:7,color:"#555",letterSpacing:2,marginBottom:1}}>{PYLON_LABELS[0]}</div><Card card={set1[0]} faceUp selected={false} matched={matchedSet1.has(0)} onClick={()=>attemptPair(0)} w={CW} h={CH}/></div>
-              <div style={{display:"flex",justifyContent:"center",gap:5}}>
-                {[1,2,3].map(i=><div key={i} style={{textAlign:"center",width:CW}}><div style={{fontSize:7,color:"#555",letterSpacing:1,marginBottom:1,whiteSpace:"nowrap"}}>{PYLON_LABELS[i]}</div><Card card={set1[i]} faceUp selected={false} matched={matchedSet1.has(i)} onClick={()=>attemptPair(i)} w={CW} h={CH}/></div>)}
+              <Card card={set1[0]} faceUp selected={false} matched={matchedSet1.has(0)} onClick={()=>attemptPair(0)} w={CW} h={CH}/>
+              <div style={{display:"inline-flex",gap:5}}>
+                <Card card={set1[1]} faceUp selected={false} matched={matchedSet1.has(1)} onClick={()=>attemptPair(1)} w={CW} h={CH}/>
+                <Card card={set1[2]} faceUp selected={false} matched={matchedSet1.has(2)} onClick={()=>attemptPair(2)} w={CW} h={CH}/>
+                <Card card={set1[3]} faceUp selected={false} matched={matchedSet1.has(3)} onClick={()=>attemptPair(3)} w={CW} h={CH}/>
               </div>
-              <div style={{textAlign:"center"}}><div style={{fontSize:7,color:"#555",letterSpacing:2,marginBottom:1}}>{PYLON_LABELS[4]}</div><Card card={set1[4]} faceUp selected={false} matched={matchedSet1.has(4)} onClick={()=>attemptPair(4)} w={CW} h={CH}/></div>
+              <Card card={set1[4]} faceUp selected={false} matched={matchedSet1.has(4)} onClick={()=>attemptPair(4)} w={CW} h={CH}/>
             </div>
           </div>
 
