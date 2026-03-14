@@ -163,6 +163,8 @@ export default function DecadenceGame(){
   const[browserDemon,setBrowserDemon]=useState(null);
   // #11: About section
   const[showAbout,setShowAbout]=useState(false);
+  // Rules collapsible
+  const[showRules,setShowRules]=useState(false);
   
   const glitchOffset=useRef({x:0,y:0});
   const canvasRef=useRef(null);
@@ -328,14 +330,14 @@ export default function DecadenceGame(){
               </div>}
             </div>)}
 
-            {/* RULES */}
-            <div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(isSub?"#1a001a":"#1a1a1a"),borderRadius:2,background:isSub?"rgba(20,0,20,0.3)":"rgba(0,0,0,0.3)",marginBottom:16}}>
-              <div style={{color:accent,fontSize:11,letterSpacing:3,marginBottom:8}}>{isSub?"SUBDECADENCE":"DECADENCE"}</div>
+            {/* RULES — collapsible */}
+            <button onClick={()=>{haptic();setShowRules(!showRules);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showRules?8:0,display:"block",margin:"0 auto 12px"}}>{showRules?"HIDE":""} {isSub?"SUBDECADENCE":"DECADENCE"} RULES</button>
+            {showRules&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(isSub?"#1a001a":"#1a1a1a"),borderRadius:2,background:isSub?"rgba(20,0,20,0.3)":"rgba(0,0,0,0.3)",marginBottom:16}}>
               <div style={{color:"#ccc",fontSize:15,lineHeight:1.9,fontFamily:"'Courier New',monospace"}}>{isSub?"The ultimate blasphemy. Add four Queens (valued 0) to the Decadence pack, bringing the total to forty cards. Play as Decadence, except making pairs which add to nine — corresponding to Numogram Syzygies. Negative results call lemurs from the Pandemonium Matrix.":"The Adept Orders of Decadence trace their system back to the submergence of Atlantis. Truncate a standard pack, removing royals, tens, and jokers — thirty-six cards remain. Five dealt face-up on the Atlantean Cross (Set-1), five face-down (Set-2). Pairs sum to ten. Each pair scores by its difference. Unpaired Set-1 cards penalize by raw value. An Aeon lasts until the first negative result. Negative scores call demons from the Pandemonium Matrix."}</div>
-            </div>
+            </div>)}
 
-            {/* #11: ABOUT / ORIGINS */}
-            <button onClick={()=>{haptic();setShowAbout(!showAbout);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showAbout?8:0}}>{showAbout?"HIDE":"ABOUT"} ORIGINS</button>
+            {/* ORIGINS — collapsible */}
+            <button onClick={()=>{haptic();setShowAbout(!showAbout);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showAbout?8:0,display:"block",margin:"0 auto 12px"}}>{showAbout?"HIDE ":""}ORIGINS</button>
             {showAbout&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid #1a1a1a",borderRadius:2,background:"rgba(0,0,0,0.3)",marginTop:8,marginBottom:16}}>
               <div style={{color:accent,fontSize:11,letterSpacing:3,marginBottom:8}}>◈ ORIGINS ◈</div>
               <div style={{color:"#ccc",fontSize:14,lineHeight:1.9}}>
