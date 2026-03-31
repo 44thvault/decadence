@@ -170,8 +170,8 @@ export default function DecadenceGame(){
   const[showRules,setShowRules]=useState(false);
   
   const glitchOffset=useRef({x:0,y:0});
-  const canvasRef=useRef(null);
-  const animRef=useRef(null);
+  // Book of Paths collapsible
+  const[showPaths,setShowPaths]=useState(false);
 
   // Persistence
   const[bestAeon,setBestAeon]=useState(()=>loadData("bestAeon",0));
@@ -181,20 +181,6 @@ export default function DecadenceGame(){
 
   const isSub=mode==="subdecadence";
   const accent=isSub?"#f0f":"#0f3";
-  const accentRgb=isSub?"255,0,255":"0,255,51";
-
-  // Ambient particles
-  useEffect(()=>{
-    const c=canvasRef.current;if(!c)return;const ctx=c.getContext("2d");let ps=[];
-    const resize=()=>{c.width=window.innerWidth;c.height=window.innerHeight;};
-    resize();window.addEventListener("resize",resize);
-    for(let i=0;i<35;i++)ps.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-0.5)*0.2,vy:(Math.random()-0.5)*0.2,s:Math.random()*1.5+0.5,o:Math.random()*0.35+0.1,p:Math.random()*6.28});
-    const anim=()=>{ctx.clearRect(0,0,c.width,c.height);
-      for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){const dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<110){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);ctx.strokeStyle="rgba("+accentRgb+","+(0.035*(1-d/110))+")";ctx.lineWidth=0.5;ctx.stroke();}}
-      ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.p+=0.02;if(p.x<0)p.x=c.width;if(p.x>c.width)p.x=0;if(p.y<0)p.y=c.height;if(p.y>c.height)p.y=0;const g=Math.sin(p.p)*0.3+0.7;ctx.beginPath();ctx.arc(p.x,p.y,p.s*g,0,6.28);ctx.fillStyle="rgba("+accentRgb+","+(p.o*g)+")";ctx.fill();});
-      animRef.current=requestAnimationFrame(anim);};
-    anim();return()=>{window.removeEventListener("resize",resize);if(animRef.current)cancelAnimationFrame(animRef.current);};
-  },[accentRgb]);
 
   useEffect(()=>{const iv=setInterval(()=>{glitchOffset.current={x:(Math.random()*3-1.5),y:(Math.random()*2-1)};setGlitchText(true);setTimeout(()=>setGlitchText(false),100);},5000+Math.random()*8000);return()=>clearInterval(iv);},[]);
 
@@ -253,9 +239,6 @@ export default function DecadenceGame(){
   const CH = Math.max(75, Math.min(130, fromHeight, fromWidth));
   const CW = Math.round(CH / 1.77);
 
-  const bgOverlay=isSub?"repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(255,0,255,0.04) 1px,rgba(255,0,255,0.04) 3px)":"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px)";
-  const vignetteColor=isSub?"rgba(40,0,40,0.6)":"rgba(0,0,0,0.5)";
-
   // #13: view a demon from the log
   const viewLoggedDemon=(entry)=>{
     const mesh=parseInt(entry.mesh);
@@ -264,11 +247,7 @@ export default function DecadenceGame(){
   };
 
   return(
-    <div style={{minHeight:"100dvh",width:"100%",background:isSub?"#050005":"#000",color:"#ccc",fontFamily:"'Courier New',monospace",position:"relative",overflow:"hidden",WebkitTapHighlightColor:"transparent",transition:"background 0.5s"}}>
-      <canvas ref={canvasRef} style={{position:"fixed",inset:0,zIndex:0,pointerEvents:"none",opacity:isSub?0.6:0.5}}/>
-      <div style={{position:"fixed",inset:0,zIndex:1,pointerEvents:"none",background:bgOverlay,transition:"background 0.5s"}}/>
-      <div style={{position:"fixed",inset:0,zIndex:1,pointerEvents:"none",background:"radial-gradient(ellipse at center,transparent 50%,"+vignetteColor+" 100%)"}}/>
-      {isSub&&<div style={{position:"fixed",inset:0,zIndex:1,pointerEvents:"none",background:"radial-gradient(circle at 50% 30%,rgba(80,0,80,0.08) 0%,transparent 60%)"}}/>}
+    <div style={{minHeight:"100dvh",width:"100%",background:"#000",color:"#ccc",fontFamily:"'Courier New',monospace",position:"relative",overflow:"hidden",WebkitTapHighlightColor:"transparent"}}>
 
       <div style={{position:"relative",zIndex:2,maxWidth:400,margin:"0 auto",padding:"6px 8px 10px",minHeight:"100dvh",overflow:gamePhase==="menu"?"auto":"auto"}}>
 
@@ -351,6 +330,20 @@ export default function DecadenceGame(){
               </div>
               <div style={{color:"#666",fontSize:12,marginTop:12}}>Source: ccru.net/digithype/pandemonium.htm</div>
             </div>)}
+
+            {/* BOOK OF PATHS — collapsible */}
+            <button onClick={()=>{haptic();setShowPaths(!showPaths);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showPaths?"HIDE ":""}BOOK OF PATHS</button>
+            {showPaths&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid #1a1a1a",borderRadius:2,background:"rgba(0,0,0,0.3)",marginBottom:16,maxHeight:400,overflowY:"auto"}}>
+              <div style={{color:accent,fontSize:11,letterSpacing:3,marginBottom:12}}>◈ BOOK OF PATHS ◈</div>
+              <div style={{color:"#999",fontSize:13,lineHeight:1.8,marginBottom:14}}>84 paths mapped to the rites of the 45 demons by Vysparov's Pandemonium Concordance. Translated from the Tibetan by Chaim Horowitz, c. 1949. Predates the I Ching according to Chinese sources from the Warring States period.</div>
+              {Object.keys(PATHS).map(k=>{const p=PATHS[k];return(<div key={k} style={{marginBottom:14,paddingBottom:10,borderBottom:"1px solid #111"}}>
+                <div style={{color:accent,fontSize:12,letterSpacing:1,marginBottom:4}}>Pth-{k}: {p.name}</div>
+                {p.lines.map((line,i)=><div key={i} style={{color:"#998",fontSize:13,lineHeight:1.7,fontStyle:"italic"}}>{line}</div>)}
+              </div>);})}
+            </div>)}
+
+            {/* CONTACT */}
+            <a href="https://x.com/playdecadence" target="_blank" rel="noopener noreferrer" style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px",textAlign:"center",textDecoration:"none"}}>CONTACT</a>
 
           </div>
         )}
