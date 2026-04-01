@@ -304,7 +304,7 @@ export default function DecadenceGame(){
 
             {/* #13: DEMON LOG — tap to view */}
             {demonLog.length>0&&(<div style={{marginBottom:16}}>
-              <button onClick={()=>{haptic();setShowHistory(!showHistory);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showHistory?8:0}}>{showHistory?"HIDE":"SHOW"} DEMON LOG ({demonLog.length})</button>
+              <button onClick={()=>{haptic();setShowHistory(!showHistory);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showHistory?8:0,display:"block",margin:"0 auto "+(showHistory?"8":"12")+"px"}}>{showHistory?"HIDE":"SHOW"} DEMON LOG ({demonLog.length})</button>
               {showHistory&&<div style={{maxHeight:200,overflowY:"auto",border:"1px solid #1a1a1a",borderRadius:2,padding:"6px 8px",background:"rgba(0,0,0,0.3)"}}>
                 {demonLog.map((e,i)=><div key={i} onClick={()=>viewLoggedDemon(e)} style={{fontSize:11,color:"#777",marginBottom:4,borderBottom:"1px solid #111",paddingBottom:4,cursor:"pointer"}}>
                   <span style={{color:"#f04"}}>{e.demon}</span> <span style={{color:"#555"}}>Mesh-{e.mesh} · -{e.score} · Rnd {e.rounds} · {e.mode}</span>
@@ -313,13 +313,13 @@ export default function DecadenceGame(){
             </div>)}
 
             {/* RULES — collapsible */}
-            <button onClick={()=>{haptic();setShowRules(!showRules);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showRules?8:0,display:"block",margin:"0 auto 12px"}}>{showRules?"HIDE":""} {isSub?"SUBDECADENCE":"DECADENCE"} RULES</button>
+            <button onClick={()=>{haptic();setShowRules(!showRules);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showRules?"HIDE":""} {isSub?"SUBDECADENCE":"DECADENCE"} RULES</button>
             {showRules&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(isSub?"#1a001a":"#1a1a1a"),borderRadius:2,background:isSub?"rgba(20,0,20,0.3)":"rgba(0,0,0,0.3)",marginBottom:16}}>
               <div style={{color:"#ccc",fontSize:15,lineHeight:1.9,fontFamily:"'Courier New',monospace"}}>{isSub?"The ultimate blasphemy. Add four Queens (valued 0) to the Decadence pack, bringing the total to forty cards. Play as Decadence, except making pairs which add to nine — corresponding to Numogram Syzygies. Negative results call lemurs from the Pandemonium Matrix.":"The Adept Orders of Decadence trace their system back to the submergence of Atlantis. Truncate a standard pack, removing royals, tens, and jokers — thirty-six cards remain. Five dealt face-up on the Atlantean Cross (Set-1), five face-down (Set-2). Pairs sum to ten. Each pair scores by its difference. Unpaired Set-1 cards penalize by raw value. An Aeon lasts until the first negative result. Negative scores call demons from the Pandemonium Matrix."}</div>
             </div>)}
 
             {/* ORIGINS — collapsible */}
-            <button onClick={()=>{haptic();setShowAbout(!showAbout);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showAbout?8:0,display:"block",margin:"0 auto 12px"}}>{showAbout?"HIDE ":""}ORIGINS</button>
+            <button onClick={()=>{haptic();setShowAbout(!showAbout);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showAbout?"HIDE ":""}ORIGINS</button>
             {showAbout&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid #1a1a1a",borderRadius:2,background:"rgba(0,0,0,0.3)",marginTop:8,marginBottom:16}}>
               <div style={{color:accent,fontSize:11,letterSpacing:3,marginBottom:8}}>◈ ORIGINS ◈</div>
               <div style={{color:"#ccc",fontSize:14,lineHeight:1.9}}>
@@ -332,7 +332,7 @@ export default function DecadenceGame(){
             </div>)}
 
             {/* BOOK OF PATHS — collapsible */}
-            <button onClick={()=>{haptic();setShowPaths(!showPaths);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showPaths?"HIDE ":""}BOOK OF PATHS</button>
+            <button onClick={()=>{haptic();setShowPaths(!showPaths);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showPaths?"HIDE ":""}BOOK OF PATHS</button>
             {showPaths&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid #1a1a1a",borderRadius:2,background:"rgba(0,0,0,0.3)",marginBottom:16,maxHeight:400,overflowY:"auto"}}>
               <div style={{color:accent,fontSize:11,letterSpacing:3,marginBottom:12}}>◈ BOOK OF PATHS ◈</div>
               <div style={{color:"#999",fontSize:13,lineHeight:1.8,marginBottom:14}}>84 paths mapped to the rites of the 45 demons by Vysparov's Pandemonium Concordance. Translated from the Tibetan by Chaim Horowitz, c. 1949. Predates the I Ching according to Chinese sources from the Warring States period.</div>
@@ -343,7 +343,7 @@ export default function DecadenceGame(){
             </div>)}
 
             {/* CONTACT */}
-            <a href="https://x.com/playdecadence" target="_blank" rel="noopener noreferrer" style={{padding:"5px 14px",background:"transparent",border:"1px solid #222",color:"#555",fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px",textAlign:"center",textDecoration:"none"}}>CONTACT</a>
+            <a href="https://x.com/playdecadence" target="_blank" rel="noopener noreferrer" onClick={()=>haptic()} style={{padding:"5px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px",textAlign:"center",textDecoration:"none",boxSizing:"border-box"}}>CONTACT</a>
 
           </div>
         )}
