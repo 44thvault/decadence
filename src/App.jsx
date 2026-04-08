@@ -269,9 +269,9 @@ export default function DecadenceGame(){
       <div style={{position:"relative",zIndex:2,maxWidth:400,margin:"0 auto",padding:"6px 8px 10px",minHeight:"100dvh",overflow:gamePhase==="menu"?"auto":"auto"}}>
 
         <header style={{textAlign:"center",marginBottom:6,paddingTop:4}}>
-          <div style={{fontSize:8,letterSpacing:5,color:T.accent,opacity:0.5,marginBottom:1}}>{isSub?"◈ LEMURIAN NECRONOMICON ◈":"◈ PANDEMONIUM MATRIX ◈"}</div>
-          <h1 style={{fontSize:20,fontWeight:"bold",margin:0,letterSpacing:4,color:T.accent,textShadow:lightMode?"none":"0 0 20px "+accent+"60,0 0 40px "+accent+"20",transform:glitchText?"translate("+glitchOffset.current.x+"px,"+glitchOffset.current.y+"px)":"none"}}>{isSub?"SUBDECADENCE":"DECADENCE"}</h1>
-          <div style={{fontSize:9,color:accent+"88",letterSpacing:2,marginTop:2}}>{isSub?"NEOLEMURIAN TIME-SORCERY · SYZYGIES → 9":"ATLANTEAN TIME-SORCERY · PAIRS → 10"}</div>
+          <div style={{fontSize:11,letterSpacing:5,color:T.accent,opacity:0.5,marginBottom:1}}>{isSub?"◈ LEMURIAN NECRONOMICON ◈":"◈ PANDEMONIUM MATRIX ◈"}</div>
+          <h1 style={{fontSize:22,fontWeight:"bold",margin:0,letterSpacing:4,color:T.accent,textShadow:lightMode?"none":"0 0 20px "+accent+"60,0 0 40px "+accent+"20",transform:glitchText?"translate("+glitchOffset.current.x+"px,"+glitchOffset.current.y+"px)":"none"}}>{isSub?"SUBDECADENCE":"DECADENCE"}</h1>
+          <div style={{fontSize:13,color:accent+"88",letterSpacing:2,marginTop:2}}>{isSub?"NEOLEMURIAN TIME-SORCERY · SYZYGIES → 9":"ATLANTEAN TIME-SORCERY · PAIRS → 10"}</div>
         </header>
 
         {/* MODE TOGGLE + CONTROLS */}
@@ -303,18 +303,18 @@ export default function DecadenceGame(){
             {/* #10: PANDEMONIUM MATRIX BROWSER */}
             <button onClick={()=>{haptic();setShowBrowser(!showBrowser);}} style={{padding:"6px 16px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:3,cursor:"pointer",borderRadius:2,marginBottom:12,display:"block",margin:"0 auto 12px"}}>◈ BROWSE PANDEMONIUM MATRIX ◈</button>
             
-            {showBrowser&&(<div style={{maxHeight:340,overflowY:"auto",border:"1px solid "+accent+"20",borderRadius:2,padding:"8px",background:"rgba(0,0,0,0.4)",marginBottom:16,textAlign:"left"}}>
+            {showBrowser&&(<div style={{maxHeight:340,overflowY:"auto",border:"1px solid "+(lightMode?"#ccc":accent+"20"),borderRadius:2,padding:"8px",background:lightMode?"#fff":"rgba(0,0,0,0.4)",marginBottom:16,textAlign:"left"}}>
               <div style={{color:accent,fontSize:10,letterSpacing:3,marginBottom:8,textAlign:"center"}}>45 DEMONS · MESH 00–44</div>
               {Object.values(DEMONS).map(d=>(
-                <div key={d.mesh} onClick={()=>{haptic();setOracleResult({type:"demonic",score:parseInt(d.mesh),demon:d});}} style={{padding:"6px 8px",borderBottom:"1px solid #1a1a1a",cursor:"pointer"}}>
+                <div key={d.mesh} onClick={()=>{haptic();setOracleResult({type:"demonic",score:parseInt(d.mesh),demon:d});}} style={{padding:"6px 8px",borderBottom:"1px solid "+(lightMode?"#ddd":"#1a1a1a"),cursor:"pointer"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                     <div>
                       <span style={{color:accent,fontSize:13,fontWeight:d.syzygy?"bold":"normal"}}>{d.name}</span>
-                      <span style={{color:"#555",fontSize:11,marginLeft:8}}>M-{d.mesh} [{d.netSpan}]</span>
+                      <span style={{color:lightMode?"#333":"#555",fontSize:11,marginLeft:8}}>M-{d.mesh} [{d.netSpan}]</span>
                     </div>
-                    <span style={{color:"#555",fontSize:10}}>{d.pitch}</span>
+                    <span style={{color:lightMode?"#333":"#555",fontSize:10}}>{d.pitch}</span>
                   </div>
-                  <div style={{color:"#444",fontSize:10,marginTop:1}}>{d.title} · {d.type}{d.phaseLimit?" · Phase-Limit":""}{d.decaCard?" · ["+d.decaCard+"]":""} · <span style={{fontStyle:"italic",color:"#383838"}}>{demonPhoneme(d.netSpan)}</span></div>
+                  <div style={{color:lightMode?"#444":"#444",fontSize:10,marginTop:1}}>{d.title} · {d.type}{d.phaseLimit?" · Phase-Limit":""}{d.decaCard?" · ["+d.decaCard+"]":""} · <span style={{fontStyle:"italic",color:lightMode?"#555":"#383838"}}>{demonPhoneme(d.netSpan)}</span></div>
                 </div>
               ))}
             </div>)}
@@ -322,9 +322,9 @@ export default function DecadenceGame(){
             {/* #13: DEMON LOG — tap to view */}
             {demonLog.length>0&&(<div style={{marginBottom:16}}>
               <button onClick={()=>{haptic();setShowHistory(!showHistory);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showHistory?8:0,display:"block",margin:"0 auto "+(showHistory?"8":"12")+"px"}}>{showHistory?"HIDE":"SHOW"} DEMON LOG ({demonLog.length})</button>
-              {showHistory&&<div style={{maxHeight:200,overflowY:"auto",border:"1px solid #1a1a1a",borderRadius:2,padding:"6px 8px",background:"rgba(0,0,0,0.3)"}}>
-                {demonLog.map((e,i)=><div key={i} onClick={()=>viewLoggedDemon(e)} style={{fontSize:11,color:"#777",marginBottom:4,borderBottom:"1px solid #111",paddingBottom:4,cursor:"pointer"}}>
-                  <span style={{color:accent}}>{e.demon}</span> <span style={{color:"#555"}}>Mesh-{e.mesh} · -{e.score} · Rnd {e.rounds} · {e.mode}</span>
+              {showHistory&&<div style={{maxHeight:200,overflowY:"auto",border:"1px solid "+(lightMode?"#ccc":"#1a1a1a"),borderRadius:2,padding:"6px 8px",background:lightMode?"#fff":"rgba(0,0,0,0.3)"}}>
+                {demonLog.map((e,i)=><div key={i} onClick={()=>viewLoggedDemon(e)} style={{fontSize:11,color:lightMode?"#333":"#777",marginBottom:4,borderBottom:"1px solid "+(lightMode?"#ddd":"#111"),paddingBottom:4,cursor:"pointer"}}>
+                  <span style={{color:accent}}>{e.demon}</span> <span style={{color:lightMode?"#333":"#555"}}>Mesh-{e.mesh} · -{e.score} · Rnd {e.rounds} · {e.mode}</span>
                 </div>)}
               </div>}
             </div>)}
@@ -333,17 +333,6 @@ export default function DecadenceGame(){
             <button onClick={()=>{haptic();setShowRules(!showRules);}} style={{padding:"6px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:12,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showRules?"HIDE":""} {isSub?"SUBDECADENCE":"DECADENCE"} RULES</button>
             {showRules&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(lightMode?"#ccc":"#1a1a1a"),borderRadius:2,background:lightMode?"rgba(0,0,0,0.03)":"rgba(0,0,0,0.3)",marginBottom:16}}>
               <div style={{color:lightMode?"#000":"#ccc",fontSize:16,lineHeight:1.9,fontFamily:"'Courier New',monospace"}}>{isSub?"The ultimate blasphemy. Add four Queens (valued 0) to the Decadence pack, bringing the total to forty cards. Play as Decadence, except making pairs which add to nine — corresponding to Numogram Syzygies. Negative results call lemurs from the Pandemonium Matrix.":"The Adept Orders of Decadence trace their system back to the submergence of Atlantis. Truncate a standard pack, removing royals, tens, and jokers — thirty-six cards remain. Five dealt face-up on the Atlantean Cross (Set-1), five face-down (Set-2). Pairs sum to ten. Each pair scores by its difference. Unpaired Set-1 cards penalize by raw value. An Aeon lasts until the first negative result. Negative scores call demons from the Pandemonium Matrix."}</div>
-            </div>)}
-
-            {/* BOOK OF PATHS — collapsible */}
-            <button onClick={()=>{haptic();setShowPaths(!showPaths);}} style={{padding:"6px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:12,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showPaths?"HIDE ":""}BOOK OF PATHS</button>
-            {showPaths&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(lightMode?"#ccc":"#1a1a1a"),borderRadius:2,background:lightMode?"rgba(0,0,0,0.03)":"rgba(0,0,0,0.3)",marginBottom:16,maxHeight:400,overflowY:"auto"}}>
-              <div style={{color:accent,fontSize:13,letterSpacing:3,marginBottom:12}}>◈ BOOK OF PATHS ◈</div>
-              <div style={{color:lightMode?"#333":"#999",fontSize:15,lineHeight:1.8,marginBottom:14}}>84 paths mapped to the rites of the 45 demons by Vysparov's Pandemonium Concordance. Translated from the Tibetan by Chaim Horowitz, c. 1949.</div>
-              {Object.keys(PATHS).map(k=>{const p=PATHS[k];return(<div key={k} style={{marginBottom:14,paddingBottom:10,borderBottom:"1px solid "+(lightMode?"#ddd":"#111")}}>
-                <div style={{color:accent,fontSize:14,letterSpacing:1,marginBottom:4}}>Pth-{k}: {p.name}</div>
-                {p.lines.map((line,i)=><div key={i} style={{color:lightMode?"#333":"#998",fontSize:15,lineHeight:1.7,fontStyle:"italic"}}>{line}</div>)}
-              </div>);})}
             </div>)}
 
             {/* ZONES — collapsible */}
@@ -357,6 +346,17 @@ export default function DecadenceGame(){
                 </div>
                 <div style={{color:lightMode?"#555":"#666",fontSize:13,marginBottom:4}}>Syzygy: {k}::{z.twin} · {z.current} · {z.gate} · Phoneme: <span style={{fontStyle:"italic"}}>{z.phoneme}</span></div>
                 <div style={{color:lightMode?"#333":"#999",fontSize:15,lineHeight:1.7}}>{z.desc}</div>
+              </div>);})}
+            </div>)}
+
+            {/* BOOK OF PATHS — collapsible */}
+            <button onClick={()=>{haptic();setShowPaths(!showPaths);}} style={{padding:"6px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:12,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showPaths?"HIDE ":""}BOOK OF PATHS</button>
+            {showPaths&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(lightMode?"#ccc":"#1a1a1a"),borderRadius:2,background:lightMode?"rgba(0,0,0,0.03)":"rgba(0,0,0,0.3)",marginBottom:16,maxHeight:400,overflowY:"auto"}}>
+              <div style={{color:accent,fontSize:13,letterSpacing:3,marginBottom:12}}>◈ BOOK OF PATHS ◈</div>
+              <div style={{color:lightMode?"#333":"#999",fontSize:15,lineHeight:1.8,marginBottom:14}}>84 paths mapped to the rites of the 45 demons by Vysparov's Pandemonium Concordance. Translated from the Tibetan by Chaim Horowitz, c. 1949.</div>
+              {Object.keys(PATHS).map(k=>{const p=PATHS[k];return(<div key={k} style={{marginBottom:14,paddingBottom:10,borderBottom:"1px solid "+(lightMode?"#ddd":"#111")}}>
+                <div style={{color:accent,fontSize:14,letterSpacing:1,marginBottom:4}}>Pth-{k}: {p.name}</div>
+                {p.lines.map((line,i)=><div key={i} style={{color:lightMode?"#333":"#998",fontSize:15,lineHeight:1.7,fontStyle:"italic"}}>{line}</div>)}
               </div>);})}
             </div>)}
 
