@@ -224,7 +224,7 @@ export default function DecadenceGame(){
       const mesh=Math.min(Math.abs(tot),44);
       const d=DEMONS[mesh];
       const entry={demon:d.name,mesh:d.mesh,score:Math.abs(tot),aeonScore,rounds:roundNum,mode,date:new Date().toISOString()};
-      const newLog=[entry,...demonLog].slice(0,50);
+      const newLog=[entry,...demonLog].slice(0,9);
       setDemonLog(newLog);saveData("demonLog",newLog);
       if(roundNum>bestRounds){setBestRounds(roundNum);saveData("bestRounds",roundNum);}
       setOracleResult({type:"demonic",score:Math.abs(tot),demon:d});setGamePhase("aeonEnd");
@@ -294,10 +294,10 @@ export default function DecadenceGame(){
             <button onClick={startAeon} style={{padding:"12px 36px",background:"transparent",border:"1px solid "+accent,color:accent,fontFamily:"monospace",fontSize:15,letterSpacing:5,cursor:"pointer",borderRadius:2,boxShadow:"0 0 25px "+accent+"20",marginBottom:10,display:"block",margin:"0 auto 10px"}}>BEGIN AEON</button>
 
             {/* STATS BAR */}
-            {(bestAeon>0||totalGames>0)&&(<div style={{display:"flex",justifyContent:"center",gap:16,marginBottom:16,fontSize:11,color:"#666"}}>
-              {bestAeon>0&&<span>BEST AEON: <span style={{color:accent}}>{bestAeon}</span></span>}
-              {bestRounds>0&&<span>LONGEST: <span style={{color:accent}}>{bestRounds}</span> RNDs</span>}
-              <span>GAMES: <span style={{color:"#999"}}>{totalGames}</span></span>
+            {(bestAeon>0||totalGames>0)&&(<div style={{display:"flex",justifyContent:"center",gap:16,marginBottom:16,fontSize:11,color:lightMode?"#000":"#fff"}}>
+              {bestAeon>0&&<span>BEST AEON: <span style={{color:lightMode?"#000":"#fff"}}>{bestAeon}</span></span>}
+              {bestRounds>0&&<span>LONGEST: <span style={{color:lightMode?"#000":"#fff"}}>{bestRounds}</span> RNDs</span>}
+              <span>GAMES: <span style={{color:lightMode?"#000":"#fff"}}>{totalGames}</span></span>
             </div>)}
 
             {/* #10: PANDEMONIUM MATRIX BROWSER */}
