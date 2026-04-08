@@ -271,7 +271,7 @@ export default function DecadenceGame(){
         <header style={{textAlign:"center",marginBottom:6,paddingTop:4}}>
           <div style={{fontSize:11,letterSpacing:5,color:T.accent,opacity:0.5,marginBottom:1}}>{isSub?"◈ LEMURIAN NECRONOMICON ◈":"◈ PANDEMONIUM MATRIX ◈"}</div>
           <h1 style={{fontSize:22,fontWeight:"bold",margin:0,letterSpacing:4,color:T.accent,textShadow:lightMode?"none":"0 0 20px "+accent+"60,0 0 40px "+accent+"20",transform:glitchText?"translate("+glitchOffset.current.x+"px,"+glitchOffset.current.y+"px)":"none"}}>{isSub?"SUBDECADENCE":"DECADENCE"}</h1>
-          <div style={{fontSize:13,color:accent+"88",letterSpacing:2,marginTop:2}}>{isSub?"NEOLEMURIAN TIME-SORCERY · SYZYGIES → 9":"ATLANTEAN TIME-SORCERY · PAIRS → 10"}</div>
+          <div style={{fontSize:13,color:lightMode?"#000":"#fff",letterSpacing:2,marginTop:2}}>{isSub?"NEOLEMURIAN TIME-SORCERY · SYZYGIES → 9":"ATLANTEAN TIME-SORCERY · PAIRS → 10"}</div>
         </header>
 
         {/* MODE TOGGLE + CONTROLS */}
