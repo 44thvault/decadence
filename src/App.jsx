@@ -310,11 +310,11 @@ export default function DecadenceGame(){
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                     <div>
                       <span style={{color:accent,fontSize:13,fontWeight:d.syzygy?"bold":"normal"}}>{d.name}</span>
-                      <span style={{color:lightMode?"#333":"#555",fontSize:11,marginLeft:8}}>M-{d.mesh} [{d.netSpan}]</span>
+                      <span style={{color:lightMode?"#333":"#ccc",fontSize:11,marginLeft:8}}>M-{d.mesh} [{d.netSpan}]</span>
                     </div>
-                    <span style={{color:lightMode?"#333":"#555",fontSize:10}}>{d.pitch}</span>
+                    <span style={{color:lightMode?"#333":"#ccc",fontSize:10}}>{d.pitch}</span>
                   </div>
-                  <div style={{color:lightMode?"#444":"#444",fontSize:10,marginTop:1}}>{d.title} · {d.type}{d.phaseLimit?" · Phase-Limit":""}{d.decaCard?" · ["+d.decaCard+"]":""} · <span style={{fontStyle:"italic",color:lightMode?"#555":"#383838"}}>{demonPhoneme(d.netSpan)}</span></div>
+                  <div style={{color:lightMode?"#444":"#bbb",fontSize:10,marginTop:1}}>{d.title} · {d.type}{d.phaseLimit?" · Phase-Limit":""}{d.decaCard?" · ["+d.decaCard+"]":""} · <span style={{fontStyle:"italic",color:lightMode?"#555":"#999"}}>{demonPhoneme(d.netSpan)}</span></div>
                 </div>
               ))}
             </div>)}
@@ -323,8 +323,8 @@ export default function DecadenceGame(){
             {demonLog.length>0&&(<div style={{marginBottom:16}}>
               <button onClick={()=>{haptic();setShowHistory(!showHistory);}} style={{padding:"5px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:10,letterSpacing:2,cursor:"pointer",borderRadius:2,marginBottom:showHistory?8:0,display:"block",margin:"0 auto "+(showHistory?"8":"12")+"px"}}>{showHistory?"HIDE":"SHOW"} DEMON LOG ({demonLog.length})</button>
               {showHistory&&<div style={{maxHeight:200,overflowY:"auto",border:"1px solid "+(lightMode?"#ccc":"#1a1a1a"),borderRadius:2,padding:"6px 8px",background:lightMode?"#fff":"rgba(0,0,0,0.3)"}}>
-                {demonLog.map((e,i)=><div key={i} onClick={()=>viewLoggedDemon(e)} style={{fontSize:11,color:lightMode?"#333":"#777",marginBottom:4,borderBottom:"1px solid "+(lightMode?"#ddd":"#111"),paddingBottom:4,cursor:"pointer"}}>
-                  <span style={{color:accent}}>{e.demon}</span> <span style={{color:lightMode?"#333":"#555"}}>Mesh-{e.mesh} · -{e.score} · Rnd {e.rounds} · {e.mode}</span>
+                {demonLog.map((e,i)=><div key={i} onClick={()=>viewLoggedDemon(e)} style={{fontSize:11,color:lightMode?"#333":"#ccc",marginBottom:4,borderBottom:"1px solid "+(lightMode?"#ddd":"#111"),paddingBottom:4,cursor:"pointer"}}>
+                  <span style={{color:accent}}>{e.demon}</span> <span style={{color:lightMode?"#333":"#ccc"}}>Mesh-{e.mesh} · -{e.score} · Rnd {e.rounds} · {e.mode}</span>
                 </div>)}
               </div>}
             </div>)}
@@ -332,7 +332,7 @@ export default function DecadenceGame(){
             {/* RULES — collapsible */}
             <button onClick={()=>{haptic();setShowRules(!showRules);}} style={{padding:"6px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:12,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showRules?"HIDE":""} {isSub?"SUBDECADENCE":"DECADENCE"} RULES</button>
             {showRules&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(lightMode?"#ccc":"#1a1a1a"),borderRadius:2,background:lightMode?"rgba(0,0,0,0.03)":"rgba(0,0,0,0.3)",marginBottom:16}}>
-              <div style={{color:lightMode?"#000":"#ccc",fontSize:16,lineHeight:1.9,fontFamily:"'Courier New',monospace"}}>{isSub?"The ultimate blasphemy. Add four Queens (valued 0) to the Decadence pack, bringing the total to forty cards. Play as Decadence, except making pairs which add to nine — corresponding to Numogram Syzygies. Negative results call lemurs from the Pandemonium Matrix.":"The Adept Orders of Decadence trace their system back to the submergence of Atlantis. Truncate a standard pack, removing royals, tens, and jokers — thirty-six cards remain. Five dealt face-up on the Atlantean Cross (Set-1), five face-down (Set-2). Pairs sum to ten. Each pair scores by its difference. Unpaired Set-1 cards penalize by raw value. An Aeon lasts until the first negative result. Negative scores call demons from the Pandemonium Matrix."}</div>
+              <div style={{color:lightMode?"#000":"#fff",fontSize:16,lineHeight:1.9,fontFamily:"'Courier New',monospace"}}>{isSub?"The ultimate blasphemy. Add four Queens (valued 0) to the Decadence pack, bringing the total to forty cards. Play as Decadence, except making pairs which add to nine — corresponding to Numogram Syzygies. Negative results call lemurs from the Pandemonium Matrix.":"The Adept Orders of Decadence trace their system back to the submergence of Atlantis. Truncate a standard pack, removing royals, tens, and jokers — thirty-six cards remain. Five dealt face-up on the Atlantean Cross (Set-1), five face-down (Set-2). Pairs sum to ten. Each pair scores by its difference. Unpaired Set-1 cards penalize by raw value. An Aeon lasts until the first negative result. Negative scores call demons from the Pandemonium Matrix."}</div>
             </div>)}
 
             {/* ZONES — collapsible */}
@@ -342,10 +342,10 @@ export default function DecadenceGame(){
               {Object.keys(ZONES).map(k=>{const z=ZONES[k];return(<div key={k} style={{marginBottom:14,paddingBottom:10,borderBottom:"1px solid "+(lightMode?"#ddd":"#111")}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
                   <span style={{color:accent,fontSize:16,fontWeight:"bold"}}>Zone-{k}</span>
-                  <span style={{color:lightMode?"#666":"#555",fontSize:12}}>{z.region} · {z.planet} · {z.spine}</span>
+                  <span style={{color:lightMode?"#666":"#ddd",fontSize:12}}>{z.region} · {z.planet} · {z.spine}</span>
                 </div>
-                <div style={{color:lightMode?"#555":"#666",fontSize:13,marginBottom:4}}>Syzygy: {k}::{z.twin} · {z.current} · {z.gate} · Phoneme: <span style={{fontStyle:"italic"}}>{z.phoneme}</span></div>
-                <div style={{color:lightMode?"#333":"#999",fontSize:15,lineHeight:1.7}}>{z.desc}</div>
+                <div style={{color:lightMode?"#555":"#ddd",fontSize:13,marginBottom:4}}>Syzygy: {k}::{z.twin} · {z.current} · {z.gate} · Phoneme: <span style={{fontStyle:"italic"}}>{z.phoneme}</span></div>
+                <div style={{color:lightMode?"#333":"#fff",fontSize:15,lineHeight:1.7}}>{z.desc}</div>
               </div>);})}
             </div>)}
 
@@ -353,10 +353,10 @@ export default function DecadenceGame(){
             <button onClick={()=>{haptic();setShowPaths(!showPaths);}} style={{padding:"6px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:12,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showPaths?"HIDE ":""}BOOK OF PATHS</button>
             {showPaths&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(lightMode?"#ccc":"#1a1a1a"),borderRadius:2,background:lightMode?"rgba(0,0,0,0.03)":"rgba(0,0,0,0.3)",marginBottom:16,maxHeight:400,overflowY:"auto"}}>
               <div style={{color:accent,fontSize:13,letterSpacing:3,marginBottom:12}}>◈ BOOK OF PATHS ◈</div>
-              <div style={{color:lightMode?"#333":"#999",fontSize:15,lineHeight:1.8,marginBottom:14}}>84 paths mapped to the rites of the 45 demons by Vysparov's Pandemonium Concordance. Translated from the Tibetan by Chaim Horowitz, c. 1949.</div>
+              <div style={{color:lightMode?"#333":"#fff",fontSize:15,lineHeight:1.8,marginBottom:14}}>84 paths mapped to the rites of the 45 demons by Vysparov's Pandemonium Concordance. Translated from the Tibetan by Chaim Horowitz, c. 1949.</div>
               {Object.keys(PATHS).map(k=>{const p=PATHS[k];return(<div key={k} style={{marginBottom:14,paddingBottom:10,borderBottom:"1px solid "+(lightMode?"#ddd":"#111")}}>
                 <div style={{color:accent,fontSize:14,letterSpacing:1,marginBottom:4}}>Pth-{k}: {p.name}</div>
-                {p.lines.map((line,i)=><div key={i} style={{color:lightMode?"#333":"#998",fontSize:15,lineHeight:1.7,fontStyle:"italic"}}>{line}</div>)}
+                {p.lines.map((line,i)=><div key={i} style={{color:lightMode?"#333":"#eee",fontSize:15,lineHeight:1.7,fontStyle:"italic"}}>{line}</div>)}
               </div>);})}
             </div>)}
 
@@ -364,10 +364,10 @@ export default function DecadenceGame(){
             <button onClick={()=>{haptic();setShowAbout(!showAbout);}} style={{padding:"6px 14px",background:"transparent",border:"1px solid "+accent+"30",color:accent,fontFamily:"monospace",fontSize:12,letterSpacing:2,cursor:"pointer",borderRadius:2,display:"block",margin:"0 auto 12px"}}>{showAbout?"HIDE ":""}ORIGINS</button>
             {showAbout&&(<div style={{padding:"14px 12px",textAlign:"left",border:"1px solid "+(lightMode?"#ccc":"#1a1a1a"),borderRadius:2,background:lightMode?"rgba(0,0,0,0.03)":"rgba(0,0,0,0.3)",marginBottom:16}}>
               <div style={{color:accent,fontSize:13,letterSpacing:3,marginBottom:8}}>◈ ORIGINS ◈</div>
-              <div style={{color:lightMode?"#000":"#ccc",fontSize:16,lineHeight:1.9}}>
+              <div style={{color:lightMode?"#000":"#fff",fontSize:16,lineHeight:1.9}}>
                 {isSub?"Subdecadence is the vigorously suppressed variant of the Decadence system — known amongst decadologists as 'the ultimate blasphemy.' Where Decadence operates under the Atlantean/AOE hermetic tradition (pairing to ten), Subdecadence pairs to nine, corresponding directly to the Numogram's syzygetic principle of zygonovism (nine-sum twinning). The four Queens (valued zero) correspond to the four Chaotic Xenodemons.":"Decadence is a gambling game and divination system associated with the Western tradition of Pandemonium practice, supposedly originating in Atlantis. The Adept Orders trace it to 10,000 BC. It is linked to Sumero-Babylonian geometry — the division of the circle into 360 (= 36 × 10) degrees. The western uptake of Pandemonium has its own esoteric gnosis called Decadology, assigning Amphidemons and Cyclic Chronodemons to nine cluster types."}
               </div>
-              <div style={{color:lightMode?"#000":"#ccc",fontSize:16,lineHeight:1.9,marginTop:10}}>
+              <div style={{color:lightMode?"#000":"#fff",fontSize:16,lineHeight:1.9,marginTop:10}}>
                 The Pandemonium Matrix is the complete system of Lemurian demonism and time-sorcery — Numogram (time-map) and Matrix (listing the names, numbers and attributes of the 45 demons). Five syzygetic demons (Katak, Djynxx, Oddubb, Murrumur, Uttunul) carry the fundamental currents. The system is constructed according to immanent criteria latent in decimal numeracy.
               </div>
               <div style={{color:lightMode?"#666":"#666",fontSize:14,marginTop:12}}>Source: ccru.net/digithype/pandemonium.htm</div>
