@@ -266,7 +266,7 @@ export default function DecadenceGame(){
   return(
     <div style={{minHeight:"100dvh",width:"100%",background:T.bg,color:T.text,fontFamily:"'Courier New',monospace",position:"relative",overflow:"hidden",WebkitTapHighlightColor:"transparent",transition:"background 0.3s, color 0.3s"}}>
 
-      <div style={{position:"relative",zIndex:2,maxWidth:400,margin:"0 auto",padding:"6px 8px 10px",minHeight:"100dvh",overflow:gamePhase==="menu"?"auto":"auto"}}>
+      <div style={{position:"relative",zIndex:2,maxWidth:400,margin:"0 auto",padding:"6px 8px 10px",minHeight:"100dvh",overflowX:"hidden"}}>
 
         <header style={{textAlign:"center",marginBottom:gamePhase==="menu"?6:2,paddingTop:gamePhase==="menu"?4:2}}>
           {gamePhase==="menu"&&<div style={{fontSize:11,letterSpacing:5,color:T.accent,opacity:0.5,marginBottom:1}}>{isSub?"◈ LEMURIAN NECRONOMICON ◈":"◈ PANDEMONIUM MATRIX ◈"}</div>}
@@ -384,8 +384,7 @@ export default function DecadenceGame(){
 
 
         {/* ═══ GAME BOARD ═══ */}
-        {(gamePhase==="playing"||gamePhase==="pairing")&&(<div style={{transform:"scale(1.12)",transformOrigin:"top center",marginBottom:CH*0.4}}>
-          <div style={{textAlign:"center",padding:"2px 8px",marginBottom:2,color:accent,fontSize:10,letterSpacing:1,minHeight:14,fontWeight:message.includes("VALID")?"bold":"normal"}}>{message}</div>
+        {(gamePhase==="playing"||gamePhase==="pairing")&&(<div>          <div style={{textAlign:"center",padding:"2px 8px",marginBottom:2,color:accent,fontSize:10,letterSpacing:1,minHeight:14,fontWeight:message.includes("VALID")?"bold":"normal"}}>{message}</div>
 
           <div style={{marginBottom:3}}>
             <div style={{color:lightMode?"#000":"#fff",fontSize:8,letterSpacing:3,textAlign:"center",marginBottom:2}}>◈ SET-1 · ATLANTEAN CROSS ◈</div>
